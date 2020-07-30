@@ -1,7 +1,7 @@
 # Личный проект «Киноман» [![Build status][travis-image]][travis-url]
 
-* Студент: [Виктория Лазор](https://up.htmlacademy.ru/ecmascript/12/user/65854).
-* Наставник: `Неизвестно`.
+-   Студент: [Виктория Лазор](https://up.htmlacademy.ru/ecmascript/12/user/65854).
+-   Наставник: [Сергей Рожков](https://htmlacademy.ru/profile/id1069033).
 
 ---
 
