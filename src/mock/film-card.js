@@ -130,11 +130,11 @@ const generateDescription = () => {
   let description = ``;
   let descriptionsFilms = descriptions.slice();
 
-  for(let i = 0; i < totalStrings; i++) {
+  for (let i = 0; i < totalStrings; i++) {
     let randomIndex = getRandomInteger(0, descriptionsFilms.length - 1);
 
-    if(i > 0 && i < totalStrings) {
-      description += ` `;
+    if (i > 0 && i < totalStrings) {
+      description += ``;
     }
 
     description += descriptionsFilms[randomIndex];
@@ -204,10 +204,10 @@ const generateComment = () => {
   const commentsQuantity = getRandomInteger(COMMENTS_MIN, COMMENTS_MAX);
   let comments = [];
 
-  for(let i = 0; i < commentsQuantity; i++) {
+  for (let i = 0; i < commentsQuantity; i++) {
     const commentDate = generateCommentDate();
     const img = generateCommentEmoji();
-    const alt = img.replace('.png','');
+    const alt = img.replace(`.png`, ``);
 
     let comment = {
       author: generateCommentAuthor(),
@@ -234,7 +234,6 @@ export const generateFilmCard = () => {
     rating: generateRating(),
     director: info.director,
     writers: info.writers,
-    director: info.director,
     actors: info.actors,
     releaseDate: info.releaseDate,
     country: info.country,
@@ -248,5 +247,5 @@ export const generateFilmCard = () => {
     isFavorite: isFilmInFilter(),
     commentsQuantity,
     comments
-  }
+  };
 };

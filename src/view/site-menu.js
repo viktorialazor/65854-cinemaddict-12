@@ -1,34 +1,34 @@
 export const createSiteMenuTemplate = (cards) => {
 
-const getQuantityCards = (cards, filter) => {
-  let quantity = 0;
+  const getQuantityCards = (filter) => {
+    let quantity = 0;
 
-  if(filter === `watchlist`) {
-    cards.forEach((item) => {
-      if(item.isInWatchlist[1]) {
-        quantity += 1;
-      }
-    });
-  } else if (filter === `watched`) {
-    cards.forEach((item) => {
-      if(item.isWatched[1]) {
-        quantity += 1;
-      }
-    });
-  } else {
-    cards.forEach((item) => {
-      if(item.isFavorite[1]) {
-        quantity += 1;
-      }
-    });
-  }
+    if (filter === `watchlist`) {
+      cards.forEach((item) => {
+        if (item.isInWatchlist[1]) {
+          quantity += 1;
+        }
+      });
+    } else if (filter === `watched`) {
+      cards.forEach((item) => {
+        if (item.isWatched[1]) {
+          quantity += 1;
+        }
+      });
+    } else {
+      cards.forEach((item) => {
+        if (item.isFavorite[1]) {
+          quantity += 1;
+        }
+      });
+    }
 
-  return quantity;
-};
+    return quantity;
+  };
 
-const watchlistCardsQuantity = getQuantityCards(cards, `watchlist`);
-const watchedCardsQuantity = getQuantityCards(cards, `watched`);
-const favoriteCardsQuantity = getQuantityCards(cards, `favorite`);
+  const watchlistCardsQuantity = getQuantityCards(`watchlist`);
+  const watchedCardsQuantity = getQuantityCards(`watched`);
+  const favoriteCardsQuantity = getQuantityCards(`favorite`);
 
   return (
     `<nav class="main-navigation">

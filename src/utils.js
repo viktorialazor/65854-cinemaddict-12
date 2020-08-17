@@ -24,7 +24,7 @@ export const humanizeDate = (dueDate) => {
 export const isFilmInFilter = () => {
   const isFilter = Boolean(getRandomInteger(0, 1));
 
-  if(isFilter) {
+  if (isFilter) {
     return [`film-card__controls-item--active`, true];
   } else {
     return [``, false];

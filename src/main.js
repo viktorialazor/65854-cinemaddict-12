@@ -55,14 +55,14 @@ const getExtraCard = (filmsCards, key) => {
   let index = 0;
 
   if (key === `rating`) {
-    for(let i = 0; i < filmsCards.length; i++) {
+    for (let i = 0; i < filmsCards.length; i++) {
       if (parseFloat(filmsCards[i].rating) > number) {
         number = parseFloat(filmsCards[i].rating);
         index = i;
       }
     }
   } else {
-    for(let i = 0; i < filmsCards.length; i++) {
+    for (let i = 0; i < filmsCards.length; i++) {
       if (parseFloat(filmsCards[i].commentsQuantity) > number) {
         number = parseFloat(filmsCards[i].commentsQuantity);
         index = i;
@@ -77,10 +77,10 @@ const getExtraCards = (filmsCards, key) => {
   let extraCards = [];
   let listCards = filmsCards.slice();
 
-  for(let i = 0; i < 2; i++) {
+  for (let i = 0; i < 2; i++) {
     let extraCard = getExtraCard(listCards, key);
     extraCards.push(extraCard[0]);
-    listCards.splice(extraCard[1], 1 , ``);
+    listCards.splice(extraCard[1], 1, ``);
   }
   return extraCards;
 };
@@ -99,8 +99,8 @@ const renderMostCommented = () => {
   let mostCommentedFilms = getExtraCards(cards, `commentsQuantity`);
 
   for (let i = 0; i < FILM_EXTRA_COUNT; i++) {
-  render(filmsMostCommentedContainerElement, createFilmCardTemplate(mostCommentedFilms[i]), `beforeend`);
-}
+    render(filmsMostCommentedContainerElement, createFilmCardTemplate(mostCommentedFilms[i]), `beforeend`);
+  }
 };
 
 renderMostCommented();

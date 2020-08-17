@@ -1,5 +1,5 @@
 const createFilmInfoTemplate = (card) => {
-  const {name, image, rating, director, writers, actors, releaseDate, country, year, duration, age, genre, description} = card;
+  const {name, image, rating, director, writers, actors, releaseDate, country, duration, age, genre, description} = card;
 
   const getFilmGenre = () => {
     let filmGenre = ``;
@@ -80,11 +80,11 @@ const createFilmControlsTemplate = (card) => {
 };
 
 const createFilmCommentTemplate = (card) => {
-  const {commentsQuantity, comments} = card;
+  const {comments} = card;
   let filmComments = ``;
 
-  if(comments.length >= 1) {
-    for(let i = 0; i < comments.length; i++) {
+  if (comments.length >= 1) {
+    for (let i = 0; i < comments.length; i++) {
       filmComments += `<li class="film-details__comment">
               <span class="film-details__comment-emoji">
                 <img src="` + comments[i].emoji + `" width="55" height="55" alt="emoji-` + comments[i].alt + `">
@@ -92,12 +92,12 @@ const createFilmCommentTemplate = (card) => {
               <div>
                 <p class="film-details__comment-text">` + comments[i].text + `</p>
                 <p class="film-details__comment-info">
-                  <span class="film-details__comment-author">` + comments[i].author +`</span>
+                  <span class="film-details__comment-author">` + comments[i].author + `</span>
                   <span class="film-details__comment-day">` + comments[i].date + `</span>
                   <button class="film-details__comment-delete">Delete</button>
                 </p>
               </div>
-            </li>`
+            </li>`;
     }
   }
 
