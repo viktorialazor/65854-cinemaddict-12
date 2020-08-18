@@ -1,3 +1,4 @@
+import {FILM_COUNT, CARD_COUNT_PER_STEP, FILM_LIST_COUNT, FILM_EXTRA_COUNT} from "./const.js";
 import {createUserProfileTemplate} from "./view/user-profile.js";
 import {createSiteMenuTemplate} from "./view/site-menu.js";
 import {createSortTemplate} from "./view/sort.js";
@@ -9,11 +10,6 @@ import {createStatisticsTemplate} from "./view/statistics.js";
 import {createFilmDetailsTemplate} from "./view/film-details.js";
 import {generateFilmCard} from "./mock/film-card.js";
 import {getRandomInteger} from "./utils.js";
-
-const FILM_COUNT = 30;
-const CARD_COUNT_PER_STEP = 5;
-const FILM_LIST_COUNT = 2;
-const FILM_EXTRA_COUNT = 2;
 
 const cards = new Array(FILM_COUNT).fill().map(generateFilmCard);
 const cardIndex = getRandomInteger(0, cards.length - 1);
@@ -55,22 +51,22 @@ const getExtraCard = (filmsCards, key) => {
   let index = 0;
 
   if (key === `rating`) {
-    for (let i = 0; i < filmsCards.length; i++) {
-      if (parseFloat(filmsCards[i].rating) > number) {
-        number = parseFloat(filmsCards[i].rating);
-        index = i;
+    filmsCards.forEach((filmCard, indexCard) => {
+      if (parseFloat(filmCard.rating) > number) {
+        number = parseFloat(filmCard.rating);
+        index = indexCard;
       }
-    }
+    });
   } else {
-    for (let i = 0; i < filmsCards.length; i++) {
-      if (parseFloat(filmsCards[i].commentsQuantity) > number) {
-        number = parseFloat(filmsCards[i].commentsQuantity);
-        index = i;
+    filmsCards.forEach((filmCard, indexCard) => {
+      if (parseFloat(filmCard.commentsQuantity) > number) {
+        number = parseFloat(filmCard.commentsQuantity);
+        index = indexCard;
       }
-    }
+    });
   }
 
-  return [cards[index], index];
+  return [filmsCards[index], index];
 };
 
 const getExtraCards = (filmsCards, key) => {
@@ -105,18 +101,17 @@ const renderMostCommented = () => {
 
 renderMostCommented();
 
-for (let i = 0; i < Math.min(cards.length, CARD_COUNT_PER_STEP); i++) {
-  render(filmsContainerElement, createFilmCardTemplate(cards[i]), `beforeend`);
-}
+cards.slice(0, Math.min(cards.length, CARD_COUNT_PER_STEP))
+  .forEach((card) => render(filmsContainerElement, createFilmCardTemplate(card), `beforeend`));
 
 if (cards.length > CARD_COUNT_PER_STEP) {
   let renderedCardCount = CARD_COUNT_PER_STEP;
 
   render(filmsListElement, createShowMoreButtonTemplate(), `beforeend`);
 
-  const showMoreButton = filmsListElement.querySelector(`.films-list__show-more`);
+  const showMoreButtonElement = filmsListElement.querySelector(`.films-list__show-more`);
 
-  showMoreButton.addEventListener(`click`, (evt) => {
+  showMoreButtonElement.addEventListener(`click`, (evt) => {
     evt.preventDefault();
     cards
       .slice(renderedCardCount, renderedCardCount + CARD_COUNT_PER_STEP)
@@ -125,7 +120,7 @@ if (cards.length > CARD_COUNT_PER_STEP) {
     renderedCardCount += CARD_COUNT_PER_STEP;
 
     if (renderedCardCount >= cards.length) {
-      showMoreButton.remove();
+      showMoreButtonElement.remove();
     }
   });
 }

@@ -1,8 +1,10 @@
+import {USER_FAN_MIN, USER_FAN_MAX} from "../const.js";
+
 const getFilmWatchedQuantity = (cards) => {
   let filmWatchedQuantity = 0;
 
   cards.forEach((item) => {
-    if (item.isWatched[1]) {
+    if (item.isWatched.isFilter) {
       filmWatchedQuantity += 1;
     }
   });
@@ -16,9 +18,9 @@ export const generateProfileRating = (cards) => {
 
   if (filmQuantity === 0) {
     rating = ``;
-  } else if (filmQuantity > 0 && filmQuantity <= 10) {
+  } else if (filmQuantity > 0 && filmQuantity <= USER_FAN_MIN) {
     rating = `Novice`;
-  } else if (filmQuantity > 10 && filmQuantity <= 20) {
+  } else if (filmQuantity > USER_FAN_MIN && filmQuantity <= USER_FAN_MAX) {
     rating = `Fan`;
   } else {
     rating = `Movie Buff`;

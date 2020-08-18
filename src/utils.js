@@ -1,32 +1,35 @@
-export const getRandomInteger = (a = 0, b = 1) => {
-  const lower = Math.ceil(Math.min(a, b));
-  const upper = Math.floor(Math.max(a, b));
+export const getRandomInteger = (from = 0, to = 1) => {
+  const lower = Math.ceil(Math.min(from, to));
+  const upper = Math.floor(Math.max(from, to));
 
   return Math.floor(lower + Math.random() * (upper - lower + 1));
 };
 
-export const getRandomFloat = (a = 1, b = 10) => {
-  const lower = Math.min(a, b);
-  const upper = Math.max(a, b);
+export const getRandomFloat = (from = 1, to = 10) => {
+  const lower = Math.min(from, to);
+  const upper = Math.max(from, to);
   let number = (lower + Math.random() * (upper - lower + 1)).toFixed(1);
 
-  if (number > 10) {
-    number = Math.floor(number);
+  if (number >= 10) {
+    number = 10;
   }
 
   return number;
 };
 
 export const humanizeDate = (dueDate) => {
-  return dueDate.toLocaleString(`en-ZA`, {year: `numeric`, month: `numeric`, day: `numeric`, hour: `numeric`, minute: `numeric`});
+  return dueDate.toLocaleString(`en-US`, {year: `numeric`, month: `numeric`, day: `numeric`, hour: `numeric`, minute: `numeric`});
 };
 
 export const isFilmInFilter = () => {
   const isFilter = Boolean(getRandomInteger(0, 1));
 
   if (isFilter) {
-    return [`film-card__controls-item--active`, true];
+    return {
+      filterClass: `film-card__controls-item--active`,
+      isFilter: true
+    };
   } else {
-    return [``, false];
+    return {isFilter: false};
   }
 };

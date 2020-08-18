@@ -1,9 +1,5 @@
+import {RATING_MIN, RATING_MAX, COMMENTS_MIN, COMMENTS_MAX} from "../const.js";
 import {getRandomInteger, getRandomFloat, humanizeDate, isFilmInFilter} from "../utils.js";
-
-const RATING_MIN = 1;
-const RATING_MAX = 10;
-const COMMENTS_MIN = 0;
-const COMMENTS_MAX = 5;
 
 const generateRating = () => {
   return getRandomFloat(RATING_MIN, RATING_MAX);
@@ -213,7 +209,7 @@ const generateComment = () => {
       author: generateCommentAuthor(),
       date: humanizeDate(commentDate),
       text: generateCommentText(),
-      emoji: `./images/emoji/` + img,
+      emoji: `./images/emoji/${img}`,
       alt
     };
 
@@ -230,7 +226,7 @@ export const generateFilmCard = () => {
 
   return {
     name: info.name,
-    image: `./images/posters/` + info.image,
+    image: `./images/posters/${info.image}`,
     rating: generateRating(),
     director: info.director,
     writers: info.writers,
