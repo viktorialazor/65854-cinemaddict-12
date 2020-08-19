@@ -5,19 +5,19 @@ export const createSiteMenuTemplate = (cards) => {
 
     if (filter === `watchlist`) {
       cards.forEach((item) => {
-        if (item.isInWatchlist.isFilter) {
+        if (item.isInWatchlist) {
           quantity += 1;
         }
       });
     } else if (filter === `watched`) {
       cards.forEach((item) => {
-        if (item.isWatched.isFilter) {
+        if (item.isWatched) {
           quantity += 1;
         }
       });
     } else {
       cards.forEach((item) => {
-        if (item.isFavorite.isFilter) {
+        if (item.isFavorite) {
           quantity += 1;
         }
       });

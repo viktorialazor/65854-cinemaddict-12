@@ -4,7 +4,7 @@ const getFilmWatchedQuantity = (cards) => {
   let filmWatchedQuantity = 0;
 
   cards.forEach((item) => {
-    if (item.isWatched.isFilter) {
+    if (item.isWatched) {
       filmWatchedQuantity += 1;
     }
   });

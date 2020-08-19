@@ -25,11 +25,8 @@ export const isFilmInFilter = () => {
   const isFilter = Boolean(getRandomInteger(0, 1));
 
   if (isFilter) {
-    return {
-      filterClass: `film-card__controls-item--active`,
-      isFilter: true
-    };
+    return `film-card__controls-item--active`;
   } else {
-    return {isFilter: false};
+    return ``;
   }
 };
