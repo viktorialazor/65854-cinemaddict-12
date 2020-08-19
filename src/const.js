@@ -1,0 +1,10 @@
+export const FILM_COUNT = 30;
+export const CARD_COUNT_PER_STEP = 5;
+export const FILM_LIST_COUNT = 2;
+export const FILM_EXTRA_COUNT = 2;
+export const RATING_MIN = 1;
+export const RATING_MAX = 10;
+export const COMMENTS_MIN = 0;
+export const COMMENTS_MAX = 5;
+export const USER_FAN_MIN = 10;
+export const USER_FAN_MAX = 20;
