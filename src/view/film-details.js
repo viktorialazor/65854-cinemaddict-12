@@ -1,115 +1,14 @@
-const createFilmInfoTemplate = (card) => {
-  const {name, image, rating, director, writers, actors, releaseDate, country, duration, age, genre, description} = card;
+import {createElement} from "../utils.js";
+import {createFilmInfoTemplate} from "./film-details-info.js";
+import {createFilmControlsTemplate} from "./film-details-controls.js";
+import {createFilmCommentsTemplate} from "./film-details-comments.js";
 
-  const getFilmGenre = () => {
-    let filmGenre = ``;
-
-    genre.forEach((item) => {
-      filmGenre += `<span class="film-details__genre">` + item + `</span>`;
-    });
-
-    return filmGenre;
-  };
-
-  const genres = getFilmGenre();
-
-  return `<div class="film-details__info-wrap">
-            <div class="film-details__poster">
-              <img class="film-details__poster-img" src="${image}" alt="">
-              <p class="film-details__age">${age}+</p>
-            </div>
-            <div class="film-details__info">
-              <div class="film-details__info-head">
-                <div class="film-details__title-wrap">
-                  <h3 class="film-details__title">${name}</h3>
-                  <p class="film-details__title-original">Original: ${name}</p>
-                </div>
-                <div class="film-details__rating">
-                  <p class="film-details__total-rating">${rating}</p>
-                </div>
-              </div>
-              <table class="film-details__table">
-                <tr class="film-details__row">
-                  <td class="film-details__term">Director</td>
-                  <td class="film-details__cell">${director}</td>
-                </tr>
-                <tr class="film-details__row">
-                  <td class="film-details__term">Writers</td>
-                  <td class="film-details__cell">${writers}</td>
-                </tr>
-                <tr class="film-details__row">
-                  <td class="film-details__term">Actors</td>
-                  <td class="film-details__cell">${actors}</td>
-                </tr>
-                <tr class="film-details__row">
-                  <td class="film-details__term">Release Date</td>
-                  <td class="film-details__cell">${releaseDate}</td>
-                </tr>
-                <tr class="film-details__row">
-                  <td class="film-details__term">Runtime</td>
-                  <td class="film-details__cell">${duration}</td>
-                </tr>
-                <tr class="film-details__row">
-                  <td class="film-details__term">Country</td>
-                  <td class="film-details__cell">${country}</td>
-                </tr>
-                <tr class="film-details__row">
-                  <td class="film-details__term">Genres</td>
-                  <td class="film-details__cell">${genres}</tr>
-              </table>
-              <p class="film-details__film-description">${description}</p>
-            </div>
-          </div>`;
-};
-
-const createFilmControlsTemplate = (card) => {
-  const {isInWatchlist, isWatched, isFavorite} = card;
-
-  const isFilmInWatchlist = isInWatchlist[1] ? `checked` : ``;
-  const isFilmWatched = isWatched[1] ? `checked` : ``;
-  const isFilmFavorite = isFavorite[1] ? `checked` : ``;
-
-  return `<section class="film-details__controls">
-            <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist" ${isFilmInWatchlist}>
-            <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">Add to watchlist</label>
-            <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched" ${isFilmWatched}>
-            <label for="watched" class="film-details__control-label film-details__control-label--watched">Already watched</label>
-            <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite" ${isFilmFavorite}>
-            <label for="favorite" class="film-details__control-label film-details__control-label--favorite">Add to favorites</label>
-          </section>`;
-};
-
-const createFilmCommentTemplate = (card) => {
-  const {comments} = card;
-  let filmComments = ``;
-
-  if (comments.length >= 1) {
-    for (let i = 0; i < comments.length; i++) {
-      filmComments += `<li class="film-details__comment">
-              <span class="film-details__comment-emoji">
-                <img src="` + comments[i].emoji + `" width="55" height="55" alt="emoji-` + comments[i].alt + `">
-              </span>
-              <div>
-                <p class="film-details__comment-text">` + comments[i].text + `</p>
-                <p class="film-details__comment-info">
-                  <span class="film-details__comment-author">` + comments[i].author + `</span>
-                  <span class="film-details__comment-day">` + comments[i].date + `</span>
-                  <button class="film-details__comment-delete">Delete</button>
-                </p>
-              </div>
-            </li>`;
-    }
-  }
-
-  return filmComments;
-};
-
-export const createFilmDetailsTemplate = (card) => {
-  const {commentsQuantity} = card;
+const createFilmDetailsTemplate = (card, comments) => {
 
   const infoTemplate = createFilmInfoTemplate(card);
   const controlsTemplate = createFilmControlsTemplate(card);
-  const commentsList = createFilmCommentTemplate(card);
+  const commentsList = createFilmCommentsTemplate(comments);
+  const commentsQuantity = comments.length;
 
   return (
     `<section class="film-details">
@@ -157,3 +56,27 @@ export const createFilmDetailsTemplate = (card) => {
     </section>`
   );
 };
+
+export default class FilmDetails {
+  constructor(card, comments) {
+    this._card = card;
+    this._comments = comments;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createFilmDetailsTemplate(this._card, this._comments);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
