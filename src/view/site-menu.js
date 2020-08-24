@@ -1,4 +1,6 @@
-export const createSiteMenuTemplate = (cards) => {
+import {createElement} from "../utils.js";
+
+const createSiteMenuTemplate = (cards) => {
 
   const getQuantityCards = (filter) => {
     let quantity = 0;
@@ -42,3 +44,26 @@ export const createSiteMenuTemplate = (cards) => {
     </nav>`
   );
 };
+
+export default class SiteMenu {
+  constructor(cards) {
+    this._cards = cards;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createSiteMenuTemplate(this._cards);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

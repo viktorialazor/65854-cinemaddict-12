@@ -1,6 +1,7 @@
+import {createElement} from "../utils.js";
 import {generateProfileRating} from "../mock/user-profile.js";
 
-export const createUserProfileTemplate = (cards) => {
+const createUserProfileTemplate = (cards) => {
   const profileRating = generateProfileRating(cards);
 
   return (
@@ -10,3 +11,26 @@ export const createUserProfileTemplate = (cards) => {
     </section>`
   );
 };
+
+export default class UserProfile {
+  constructor(cards) {
+    this._cards = cards;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createUserProfileTemplate(this._cards);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
