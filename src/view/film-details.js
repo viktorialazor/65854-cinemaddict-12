@@ -4,7 +4,6 @@ import {createFilmControlsTemplate} from "./film-details-controls.js";
 import {createFilmCommentsTemplate} from "./film-details-comments.js";
 
 const createFilmDetailsTemplate = (card, comments) => {
-
   const infoTemplate = createFilmInfoTemplate(card);
   const controlsTemplate = createFilmControlsTemplate(card);
   const commentsList = createFilmCommentsTemplate(comments);

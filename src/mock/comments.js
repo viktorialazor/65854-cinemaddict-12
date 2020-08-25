@@ -1,60 +1,35 @@
-import {COMMENTS_MIN, COMMENTS_MAX} from "../const.js";
+import {YEAR, MAX_MONTH_GAP, MAX_DAYS_GAP, MAX_HOURS_GAP, MAX_MINUTES_GAP, COMMENT_EMOJI, COMMENT_AUTHORS, COMMENT_TEXT, COMMENTS_MIN, COMMENTS_MAX} from "../const.js";
 import {getRandomInteger, humanizeDate} from "../utils.js";
 
 const generateCommentDate = () => {
-
-  const year = 2019;
-  const maxMonthGap = 11;
-  const maxDaysGap = 6;
-  const maxHoursGap = 24;
-  const maxMinutesGap = 60;
-  const monthGap = getRandomInteger(-maxMonthGap, maxMonthGap);
-  const daysGap = getRandomInteger(-maxDaysGap, maxDaysGap);
-  const hoursGap = getRandomInteger(-maxHoursGap, maxHoursGap);
-  const minutesGap = getRandomInteger(-maxMinutesGap, maxMinutesGap);
+  const monthGap = getRandomInteger(-MAX_MONTH_GAP, MAX_MONTH_GAP);
+  const daysGap = getRandomInteger(-MAX_DAYS_GAP, MAX_DAYS_GAP);
+  const hoursGap = getRandomInteger(-MAX_HOURS_GAP, MAX_HOURS_GAP);
+  const minutesGap = getRandomInteger(-MAX_MINUTES_GAP, MAX_MINUTES_GAP);
   const currentDate = new Date();
 
-  currentDate.setFullYear(year, monthGap, daysGap);
+  currentDate.setFullYear(YEAR, monthGap, daysGap);
   currentDate.setHours(hoursGap, minutesGap);
 
   return new Date(currentDate);
 };
 
 const generateCommentEmoji = () => {
+  const randomIndex = getRandomInteger(0, COMMENT_EMOJI.length - 1);
 
-  const commentEmoji = [
-    `angry.png`,
-    `puke.png`,
-    `sleeping.png`,
-    `smile.png`
-  ];
-  const randomIndex = getRandomInteger(0, commentEmoji.length - 1);
-
-  return commentEmoji[randomIndex];
+  return COMMENT_EMOJI[randomIndex];
 };
 
 const generateCommentAuthor = () => {
+  const randomIndex = getRandomInteger(0, COMMENT_AUTHORS.length - 1);
 
-  const commentAuthors = [
-    `Tim Macoveev`,
-    `John Doe`
-  ];
-  const randomIndex = getRandomInteger(0, commentAuthors.length - 1);
-
-  return commentAuthors[randomIndex];
+  return COMMENT_AUTHORS[randomIndex];
 };
 
 const generateCommentText = () => {
+  const randomIndex = getRandomInteger(0, COMMENT_TEXT.length - 1);
 
-  const commentText = [
-    `Fusce tristique felis at fermentum pharetra.`,
-    `Aliquam id orci ut lectus varius viverra.`,
-    `Aliquam erat volutpat.`,
-    `Nunc fermentum tortor ac porta dapibus.`
-  ];
-  const randomIndex = getRandomInteger(0, commentText.length - 1);
-
-  return commentText[randomIndex];
+  return COMMENT_TEXT[randomIndex];
 };
 
 export const generateComments = () => {
