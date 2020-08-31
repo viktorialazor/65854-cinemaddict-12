@@ -1,4 +1,5 @@
-import {getRandomInteger, createElement} from "../utils.js";
+import AbstractView from "./abstract.js";
+import {getRandomInteger} from "../utils/common.js";
 
 const STATISTICS_MIN = 1000;
 const STATISTICS_MAX = 200000;
@@ -15,25 +16,13 @@ const createStatisticsTemplate = (cards) => {
   );
 };
 
-export default class Statistics {
+export default class StatisticsView extends AbstractView {
   constructor(cards) {
-    this._element = null;
+    super();
     this._cards = cards;
   }
 
   getTemplate() {
     return createStatisticsTemplate(this._cards);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

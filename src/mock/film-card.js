@@ -1,5 +1,6 @@
 import {RATING_MIN, RATING_MAX} from "../const.js";
-import {getRandomInteger, getRandomFloat, isFilmInFilter} from "../utils.js";
+import {getRandomInteger, getRandomFloat} from "../utils/common.js";
+import {isFilmInFilter} from "../utils/card.js";
 
 const generateRating = () => {
   return getRandomFloat(RATING_MIN, RATING_MAX);
