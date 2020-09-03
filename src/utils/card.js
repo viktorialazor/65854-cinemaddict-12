@@ -1,3 +1,4 @@
+import {EXTRA_CARD_KEY, FILM_EXTRA_COUNT} from "../const.js";
 import {getRandomInteger} from "./common.js";
 
 export const humanizeDate = (dueDate) => {
@@ -7,18 +8,14 @@ export const humanizeDate = (dueDate) => {
 export const isFilmInFilter = () => {
   const isFilter = Boolean(getRandomInteger(0, 1));
 
-  if (isFilter) {
-    return `film-card__controls-item--active`;
-  } else {
-    return ``;
-  }
+  return isFilter ? `film-card__controls-item--active` : ``;
 };
 
 export const getExtraCard = (filmsCards, commentsFilm, key) => {
   let number = 0;
   let index = 0;
 
-  if (key === `rating`) {
+  if (key === EXTRA_CARD_KEY) {
     filmsCards.forEach((filmCard, indexCard) => {
       if (parseFloat(filmCard.rating) > number) {
         number = parseFloat(filmCard.rating);
@@ -36,7 +33,7 @@ export const getExtraCard = (filmsCards, commentsFilm, key) => {
 
   return {
     extraCard: filmsCards[index],
-    commentsList: commentsFilm[index],
+    commentsCard: commentsFilm[index],
     indexCard: index
   };
 };
@@ -44,13 +41,15 @@ export const getExtraCard = (filmsCards, commentsFilm, key) => {
 export const getTopCards = (filmsCards, commentsFilm) => {
   let topCards = [];
   let commentsList = [];
-  let cardsList = filmsCards.slice();
+  let filmsCardsList = filmsCards.slice();
+  let filmsCommentsList = commentsFilm.slice();
 
-  for (let i = 0; i < 2; i++) {
-    let topCard = getExtraCard(cardsList, commentsFilm, `rating`);
+  for (let i = 0; i < Math.min(filmsCards.length, FILM_EXTRA_COUNT); i++) {
+    let topCard = getExtraCard(filmsCardsList, filmsCommentsList, `rating`);
     topCards.push(topCard.extraCard);
-    commentsList.push(topCard.commentsList);
-    cardsList.splice(topCard.indexCard, 1, ``);
+    commentsList.push(topCard.commentsCard);
+    filmsCardsList.splice(topCard.indexCard, 1, ``);
+    filmsCommentsList.splice(topCard.indexCard, 1, ``);
   }
 
   return [topCards, commentsList];
@@ -59,13 +58,15 @@ export const getTopCards = (filmsCards, commentsFilm) => {
 export const getMostCommentedCards = (filmsCards, commentsFilm) => {
   let mostCommentedCards = [];
   let cardsList = [];
-  let commentsList = commentsFilm.slice();
+  let filmsCommentsList = commentsFilm.slice();
+  let filmsCardsList = filmsCards.slice();
 
-  for (let i = 0; i < 2; i++) {
-    let mostCommentedCard = getExtraCard(filmsCards, commentsList, `comments`);
+  for (let i = 0; i < Math.min(filmsCards.length, FILM_EXTRA_COUNT); i++) {
+    let mostCommentedCard = getExtraCard(filmsCardsList, filmsCommentsList, `comments`);
     cardsList.push(mostCommentedCard.extraCard);
-    mostCommentedCards.push(mostCommentedCard.commentsList);
-    commentsList.splice(mostCommentedCard.indexCard, 1, ``);
+    mostCommentedCards.push(mostCommentedCard.commentsCard);
+    filmsCommentsList.splice(mostCommentedCard.indexCard, 1, ``);
+    filmsCardsList.splice(mostCommentedCard.indexCard, 1, ``);
   }
   return [cardsList, mostCommentedCards];
 };

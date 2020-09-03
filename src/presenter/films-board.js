@@ -1,6 +1,6 @@
-import {CARD_COUNT_PER_STEP, FILM_EXTRA_COUNT} from "../const.js";
+import {CARD_COUNT_PER_STEP, FILM_EXTRA_COUNT, RENDER_POSITION} from "../const.js";
 import {getTopCards, getMostCommentedCards} from "../utils/card.js";
-import {render, RenderPosition, remove} from "../utils/render.js";
+import {render, remove} from "../utils/render.js";
 import SortView from "../view/sort.js";
 import FilmsBoardView from "../view/films-board.js";
 import ShowMoreButtonView from "../view/show-more-button.js";
@@ -12,7 +12,7 @@ import FilmsListExtraView from "../view/films-list-extra.js";
 import FilmDetailsView from "../view/film-details.js";
 import NoFilmCardsView from "../view/no-film-card.js";
 
-export default class FilmsBoard {
+export default class FilmsBoardPresenter {
   constructor(filmsBoardContainer) {
     this._filmsBoardContainer = filmsBoardContainer;
     this._renderedCardCount = CARD_COUNT_PER_STEP;
@@ -34,14 +34,14 @@ export default class FilmsBoard {
 
     this._renderSort();
 
-    render(this._filmsBoardContainer, this._filmsBoardComponent, RenderPosition.BEFOREEND);
-    render(this._filmsBoardComponent, this._filmsListComponent, RenderPosition.BEFOREEND);
+    render(this._filmsBoardContainer, this._filmsBoardComponent, RENDER_POSITION.BEFOREEND);
+    render(this._filmsBoardComponent, this._filmsListComponent, RENDER_POSITION.BEFOREEND);
 
     this._renderFilmsBoard();
   }
 
   _renderSort() {
-    render(this._filmsBoardContainer, this._sortViewComponent, RenderPosition.BEFOREEND);
+    render(this._filmsBoardContainer, this._sortViewComponent, RENDER_POSITION.BEFOREEND);
   }
 
   _renderCard(position, card, commentsFilm) {
@@ -81,44 +81,58 @@ export default class FilmsBoard {
       document.addEventListener(`keydown`, onEscKeyDown);
     }, `.film-card__comments`);
 
-    render(position, cardComponent, RenderPosition.BEFOREEND);
+    render(position, cardComponent, RENDER_POSITION.BEFOREEND);
   }
 
   _renderCards(from, to, position, isButton) {
+    let indexStep = 0;
+
     if (isButton === `isButton`) {
-      this._cardsFilm
-        .slice(from, to)
-        .forEach((card, index) => this._renderCard(position, card, this._commentsFilms[index + from]));
-    } else {
-      this._cardsFilm
-        .slice(from, to)
-        .forEach((card, index) => this._renderCard(position, card, this._commentsFilms[index]));
+      indexStep = from;
     }
+
+    this._cardsFilm
+      .slice(from, to)
+      .forEach((card, index) => this._renderCard(position, card, this._commentsFilms[index + indexStep]));
   }
 
   _renderTopRated(position) {
-    const topCardsFilms = getTopCards(this._cardsFilm, this._commentsFilms);
-    const cardsTop = topCardsFilms[0];
-    const cardsComments = topCardsFilms[1];
+    const [cardsTop, cardsComments] = getTopCards(this._cardsFilm, this._commentsFilms);
 
-    for (let i = 0; i < Math.min(this._cardsFilm.length, FILM_EXTRA_COUNT); i++) {
-      this._renderCard(position, cardsTop[i], cardsComments[i]);
-    }
+    // for (let i = 0; i < Math.min(this._cardsFilm.length, FILM_EXTRA_COUNT); i++) {
+    //   this._renderCard(position, cardsTop[i], cardsComments[i]);
+    // }
+
+    [cardsTop, cardsComments]
+      .slice()
+      .forEach((item, index) => {
+        // Поставила   условие "if", потому  что  если карточка  т олько одна, что  карточка  пытается   отрисоваться  два раза и второй раз у нее значения underfind и выводится  ошибка
+        // Я думаю, что  вариант , который  я написала неправильный, потому  что  если нам нужно будет  отривать   больше двух карточек  в блоках "Top rated" и "Most commented", то  все равно отрисуется  только  две
+        if (cardsTop[index]) {
+          this._renderCard(position, cardsTop[index], cardsComments[index]);
+        }
+      });
   }
 
   _renderMostCommented(position) {
-    const mostCommentedFilms = getMostCommentedCards(this._cardsFilm, this._commentsFilms);
-    const cardsFilms = mostCommentedFilms[0];
-    const cardsComments = mostCommentedFilms[1];
+    const [cardsFilms, cardsComments] = getMostCommentedCards(this._cardsFilm, this._commentsFilms);
 
-    for (let i = 0; i < Math.min(this._cardsFilm.length, FILM_EXTRA_COUNT); i++) {
-      this._renderCard(position, cardsFilms[i], cardsComments[i]);
-    }
+    // for (let i = 0; i < Math.min(this._cardsFilm.length, FILM_EXTRA_COUNT); i++) {
+    //   this._renderCard(position, cardsFilms[i], cardsComments[i]);
+    // }
+
+    [cardsFilms, cardsComments]
+      .slice()
+      .forEach((item, index) => {
+        if (cardsFilms[index]) {
+          this._renderCard(position, cardsFilms[index], cardsComments[index]);
+        }
+      });
   }
 
   _renderFilmsExtra() {
     for (let i = 0; i < FILM_EXTRA_COUNT; i++) {
-      render(this._filmsBoardComponent, new FilmsListExtraView(), RenderPosition.BEFOREEND);
+      render(this._filmsBoardComponent, new FilmsListExtraView(), RENDER_POSITION.BEFOREEND);
     }
 
     const filmsExtraElements = document.querySelectorAll(`.films-list--extra`);
@@ -135,7 +149,7 @@ export default class FilmsBoard {
   }
 
   _renderNoCards() {
-    render(this._filmsListComponent, this._noFilmCardsComponent, RenderPosition.BEFOREEND);
+    render(this._filmsListComponent, this._noFilmCardsComponent, RENDER_POSITION.BEFOREEND);
   }
 
   _handleShowMoreButtonClick() {
@@ -149,7 +163,7 @@ export default class FilmsBoard {
   }
 
   _renderShowMoreButton() {
-    render(this._filmsListComponent, this._showMoreButtonComponent, RenderPosition.BEFOREEND);
+    render(this._filmsListComponent, this._showMoreButtonComponent, RENDER_POSITION.BEFOREEND);
 
     this._showMoreButtonComponent.setClickHandler(this._handleShowMoreButtonClick);
   }
@@ -160,8 +174,8 @@ export default class FilmsBoard {
       return;
     }
 
-    render(this._filmsListComponent, this._filmsListTitleComponent, RenderPosition.BEFOREEND);
-    render(this._filmsListComponent, this._filmsListContainerComponent, RenderPosition.BEFOREEND);
+    render(this._filmsListComponent, this._filmsListTitleComponent, RENDER_POSITION.BEFOREEND);
+    render(this._filmsListComponent, this._filmsListContainerComponent, RENDER_POSITION.BEFOREEND);
 
     this._renderCards(0, Math.min(this._cardsFilm.length, CARD_COUNT_PER_STEP), this._filmsListContainerComponent, `noButton`);
 

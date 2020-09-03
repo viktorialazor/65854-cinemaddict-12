@@ -1,11 +1,11 @@
-import {FILM_COUNT} from "./const.js";
+import {FILM_COUNT, RENDER_POSITION} from "./const.js";
 import UserProfileView from "./view/user-profile.js";
 import SiteMenuView from "./view/site-menu.js";
 import StatisticsView from "./view/statistics.js";
 import FilmsBoardPresenter from "./presenter/films-board.js";
 import {generateFilmCard} from "./mock/film-card.js";
 import {generateComments} from "./mock/comments.js";
-import {render, RenderPosition} from "./utils/render.js";
+import {render} from "./utils/render.js";
 
 
 const cards = new Array(FILM_COUNT).fill().map(generateFilmCard);
@@ -19,9 +19,9 @@ const siteFooterStatisticsElement = siteFooterElement.querySelector(`.footer__st
 
 const filmsBoardPresenter = new FilmsBoardPresenter(siteMainElement);
 
-render(siteHeaderElement, new UserProfileView(cards), RenderPosition.BEFOREEND);
-render(siteMainElement, new SiteMenuView(cards), RenderPosition.BEFOREEND);
+render(siteHeaderElement, new UserProfileView(cards), RENDER_POSITION.BEFOREEND);
+render(siteMainElement, new SiteMenuView(cards), RENDER_POSITION.BEFOREEND);
 
 filmsBoardPresenter.init(cards, comments);
 
-render(siteFooterStatisticsElement, new StatisticsView(cards), RenderPosition.BEFOREEND);
+render(siteFooterStatisticsElement, new StatisticsView(cards), RENDER_POSITION.BEFOREEND);
