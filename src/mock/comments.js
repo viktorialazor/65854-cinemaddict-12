@@ -1,5 +1,6 @@
 import {YEAR, MAX_MONTH_GAP, MAX_DAYS_GAP, MAX_HOURS_GAP, MAX_MINUTES_GAP, COMMENT_EMOJI, COMMENT_AUTHORS, COMMENT_TEXT, COMMENTS_MIN, COMMENTS_MAX} from "../const.js";
-import {getRandomInteger, humanizeDate} from "../utils.js";
+import {getRandomInteger} from "../utils/common.js";
+import {humanizeDate} from "../utils/card.js";
 
 const generateCommentDate = () => {
   const monthGap = getRandomInteger(-MAX_MONTH_GAP, MAX_MONTH_GAP);

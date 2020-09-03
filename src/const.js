@@ -1,4 +1,4 @@
-export const FILM_COUNT = 22;
+export const FILM_COUNT = 1;
 export const CARD_COUNT_PER_STEP = 5;
 export const FILM_LIST_COUNT = 2;
 export const FILM_EXTRA_COUNT = 2;
@@ -9,6 +9,11 @@ export const MAX_MONTH_GAP = 11;
 export const MAX_DAYS_GAP = 7;
 export const MAX_HOURS_GAP = 24;
 export const MAX_MINUTES_GAP = 60;
+export const EXTRA_CARD_KEY = `rating`;
+export const RENDER_POSITION = {
+  AFTERBEGIN: `afterbegin`,
+  BEFOREEND: `beforeend`
+};
 export const COMMENT_EMOJI = [
   `angry.png`,
   `puke.png`,
