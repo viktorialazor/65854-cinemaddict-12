@@ -6,6 +6,7 @@ import FilmsBoardPresenter from "./presenter/films-board.js";
 import {generateFilmCard} from "./mock/film-card.js";
 import {generateComments} from "./mock/comments.js";
 import {render} from "./utils/render.js";
+import {filmsList} from "./utils/card.js";
 
 
 const cards = new Array(FILM_COUNT).fill().map(generateFilmCard);
@@ -22,6 +23,8 @@ const filmsBoardPresenter = new FilmsBoardPresenter(siteMainElement);
 render(siteHeaderElement, new UserProfileView(cards), RENDER_POSITION.BEFOREEND);
 render(siteMainElement, new SiteMenuView(cards), RENDER_POSITION.BEFOREEND);
 
-filmsBoardPresenter.init(cards, comments);
+const cardsList = filmsList(cards, comments);
+
+filmsBoardPresenter.init(cardsList);
 
 render(siteFooterStatisticsElement, new StatisticsView(cards), RENDER_POSITION.BEFOREEND);

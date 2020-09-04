@@ -1,5 +1,5 @@
 export const createFilmInfoTemplate = (card) => {
-  const {name, image, rating, director, writers, actors, releaseDate, country, duration, age, genre, description} = card;
+  const {name, image, rating, director, writers, actors, releaseDate, country, duration, age, genre, description} = card[0];
 
   const getFilmGenre = () => {
     let filmGenre = ``;

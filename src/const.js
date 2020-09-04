@@ -1,4 +1,4 @@
-export const FILM_COUNT = 1;
+export const FILM_COUNT = 22;
 export const CARD_COUNT_PER_STEP = 5;
 export const FILM_LIST_COUNT = 2;
 export const FILM_EXTRA_COUNT = 2;
@@ -34,3 +34,8 @@ export const COMMENTS_MIN = 0;
 export const COMMENTS_MAX = 5;
 export const USER_FAN_MIN = 10;
 export const USER_FAN_MAX = 20;
+export const SORT_TYPE = {
+  DEFAULT: `default`,
+  BY_DATE: `by-date`,
+  BY_RATING: `by-rating`
+};

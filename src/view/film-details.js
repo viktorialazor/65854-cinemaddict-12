@@ -3,11 +3,11 @@ import {createFilmInfoTemplate} from "./film-details-info.js";
 import {createFilmControlsTemplate} from "./film-details-controls.js";
 import {createFilmCommentsTemplate} from "./film-details-comments.js";
 
-const createFilmDetailsTemplate = (card, comments) => {
+const createFilmDetailsTemplate = (card) => {
   const infoTemplate = createFilmInfoTemplate(card);
   const controlsTemplate = createFilmControlsTemplate(card);
-  const commentsList = createFilmCommentsTemplate(comments);
-  const commentsQuantity = comments.length;
+  const commentsList = createFilmCommentsTemplate(card);
+  const commentsQuantity = card[1].length;
 
   return (
     `<section class="film-details">
@@ -57,15 +57,14 @@ const createFilmDetailsTemplate = (card, comments) => {
 };
 
 export default class FilmDetailsView extends AbstractView {
-  constructor(card, comments) {
+  constructor(card) {
     super();
     this._card = card;
-    this._comments = comments;
     this._closeClickHandler = this._closeClickHandler.bind(this);
   }
 
   getTemplate() {
-    return createFilmDetailsTemplate(this._card, this._comments);
+    return createFilmDetailsTemplate(this._card);
   }
 
   _closeClickHandler(evt) {
