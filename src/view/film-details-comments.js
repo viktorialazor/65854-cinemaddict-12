@@ -1,6 +1,6 @@
 export const createFilmCommentsTemplate = (card) => {
 
-  const comments = card[1];
+  const comments = card;
   let filmComments = ``;
 
   if (comments.length >= 1) {

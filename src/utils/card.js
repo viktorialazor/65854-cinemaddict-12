@@ -1,22 +1,6 @@
 import {EXTRA_CARD_KEY, FILM_EXTRA_COUNT} from "../const.js";
 import {getRandomInteger} from "./common.js";
 
-export const filmsList = (cardsList, commentsList) => {
-  const cardsFilms = cardsList.slice();
-  const commentsFilms = commentsList.slice();
-  let cards = [];
-  let card = [];
-
-  cardsFilms.forEach((item, index) => {
-    card.push(item);
-    card.push(commentsFilms[index]);
-    cards.push(card);
-    card = [];
-  });
-
-  return cards;
-};
-
 export const humanizeDate = (dueDate) => {
   return dueDate.toLocaleString(`en-US`, {year: `numeric`, month: `numeric`, day: `numeric`, hour: `numeric`, minute: `numeric`});
 };
@@ -34,8 +18,8 @@ export const getExtraCard = (filmsCards, key) => {
   if (key === EXTRA_CARD_KEY) {
     filmsCards.forEach((item, index) => {
       if (item !== ``) {
-        if (parseFloat(item[0].rating) > number) {
-          number = parseFloat(item[0].rating);
+        if (parseFloat(item.rating) > number) {
+          number = parseFloat(item.rating);
           indexCard = index;
         }
       }
@@ -43,8 +27,8 @@ export const getExtraCard = (filmsCards, key) => {
   } else {
     filmsCards.forEach((item, index) => {
       if (item !== ``) {
-        if (parseInt(item[1].length, 10) > number) {
-          number = parseInt(item[1].length, 10);
+        if (parseInt(item.comments.length, 10) > number) {
+          number = parseInt(item.comments.length, 10);
           indexCard = index;
         }
       }
@@ -86,35 +70,31 @@ export const getMostCommentedCards = (filmsCards) => {
 const getWeightData = (dataA, dataB) => {
   if (dataA === dataB) {
     return 0;
-  }
-
-  if (dataA < dataB) {
+  } else if (dataA < dataB) {
     return 1;
-  }
-
-  if (dataB < dataA) {
+  } else if (dataA > dataB) {
     return -1;
+  } else {
+    return null;
   }
-
-  return null;
 };
 
 export const sortByDate = (cardA, cardB) => {
-  const weight = getWeightData(cardA[0].year, cardB[0].year);
+  const weight = getWeightData(cardA.year, cardB.year);
 
   if (weight !== null) {
     return weight;
   }
 
-  return cardB[0].year - cardA[0].year;
+  return cardB.year - cardA.year;
 };
 
 export const sortByRating = (cardA, cardB) => {
-  const weight = getWeightData(cardA[0].rating, cardB[0].rating);
+  const weight = getWeightData(cardA.rating, cardB.rating);
 
   if (weight !== null) {
     return weight;
   }
 
-  return cardB[0].rating - cardA[0].rating;
+  return cardB.rating - cardA.rating;
 };

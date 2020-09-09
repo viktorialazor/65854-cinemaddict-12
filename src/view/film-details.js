@@ -7,7 +7,8 @@ const createFilmDetailsTemplate = (card) => {
   const infoTemplate = createFilmInfoTemplate(card);
   const controlsTemplate = createFilmControlsTemplate(card);
   const commentsList = createFilmCommentsTemplate(card);
-  const commentsQuantity = card[1].length;
+  const comments = card;
+  const commentsQuantity = comments.length;
 
   return (
     `<section class="film-details">

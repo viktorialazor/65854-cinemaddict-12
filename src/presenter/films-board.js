@@ -1,4 +1,4 @@
-import {CARD_COUNT_PER_STEP, FILM_EXTRA_COUNT, RENDER_POSITION, SORT_TYPE} from "../const.js";
+import {CARD_COUNT_PER_STEP, FILM_EXTRA_COUNT, RenderPosition, SortType} from "../const.js";
 import {getTopCards, getMostCommentedCards, sortByDate, sortByRating} from "../utils/card.js";
 import {render, remove} from "../utils/render.js";
 import SortView from "../view/sort.js";
@@ -16,7 +16,7 @@ export default class FilmsBoardPresenter {
   constructor(filmsBoardContainer) {
     this._filmsBoardContainer = filmsBoardContainer;
     this._renderedCardCount = CARD_COUNT_PER_STEP;
-    this._currentSortType = SORT_TYPE.DEFAULT;
+    this._currentSortType = SortType.DEFAULT;
 
     this._sortComponent = new SortView();
     this._filmsBoardComponent = new FilmsBoardView();
@@ -36,18 +36,18 @@ export default class FilmsBoardPresenter {
 
     this._renderSort();
 
-    render(this._filmsBoardContainer, this._filmsBoardComponent, RENDER_POSITION.BEFOREEND);
-    render(this._filmsBoardComponent, this._filmsListComponent, RENDER_POSITION.BEFOREEND);
+    render(this._filmsBoardContainer, this._filmsBoardComponent, RenderPosition.BEFOREEND);
+    render(this._filmsBoardComponent, this._filmsListComponent, RenderPosition.BEFOREEND);
 
     this._renderFilmsBoard();
   }
 
   _sortCards(sortType) {
     switch (sortType) {
-      case SORT_TYPE.BY_DATE:
+      case SortType.BY_DATE:
         this._cardsFilms.sort(sortByDate);
         break;
-      case SORT_TYPE.BY_RATING:
+      case SortType.BY_RATING:
         this._cardsFilms.sort(sortByRating);
         break;
       default:
@@ -72,7 +72,7 @@ export default class FilmsBoardPresenter {
   }
 
   _renderSort() {
-    render(this._filmsBoardContainer, this._sortComponent, RENDER_POSITION.BEFOREEND);
+    render(this._filmsBoardContainer, this._sortComponent, RenderPosition.BEFOREEND);
     this._sortComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
   }
 
@@ -113,7 +113,7 @@ export default class FilmsBoardPresenter {
       document.addEventListener(`keydown`, onEscKeyDown);
     }, `.film-card__comments`);
 
-    render(position, cardComponent, RENDER_POSITION.BEFOREEND);
+    render(position, cardComponent, RenderPosition.BEFOREEND);
   }
 
   _renderCards(from, to, position) {
@@ -146,7 +146,7 @@ export default class FilmsBoardPresenter {
 
   _renderFilmsExtra() {
     for (let i = 0; i < FILM_EXTRA_COUNT; i++) {
-      render(this._filmsBoardComponent, new FilmsListExtraView(), RENDER_POSITION.BEFOREEND);
+      render(this._filmsBoardComponent, new FilmsListExtraView(), RenderPosition.BEFOREEND);
     }
 
     const filmsExtraElements = document.querySelectorAll(`.films-list--extra`);
@@ -163,7 +163,7 @@ export default class FilmsBoardPresenter {
   }
 
   _renderNoCards() {
-    render(this._filmsListComponent, this._noFilmCardsComponent, RENDER_POSITION.BEFOREEND);
+    render(this._filmsListComponent, this._noFilmCardsComponent, RenderPosition.BEFOREEND);
   }
 
   _handleShowMoreButtonClick() {
@@ -177,7 +177,7 @@ export default class FilmsBoardPresenter {
   }
 
   _renderShowMoreButton() {
-    render(this._filmsListComponent, this._showMoreButtonComponent, RENDER_POSITION.BEFOREEND);
+    render(this._filmsListComponent, this._showMoreButtonComponent, RenderPosition.BEFOREEND);
 
     this._showMoreButtonComponent.setClickHandler(this._handleShowMoreButtonClick);
   }
@@ -188,8 +188,8 @@ export default class FilmsBoardPresenter {
       return;
     }
 
-    render(this._filmsListComponent, this._filmsListTitleComponent, RENDER_POSITION.BEFOREEND);
-    render(this._filmsListComponent, this._filmsListContainerComponent, RENDER_POSITION.BEFOREEND);
+    render(this._filmsListComponent, this._filmsListTitleComponent, RenderPosition.BEFOREEND);
+    render(this._filmsListComponent, this._filmsListContainerComponent, RenderPosition.BEFOREEND);
 
     this._renderCards(0, Math.min(this._cardsFilms.length, CARD_COUNT_PER_STEP), this._filmsListContainerComponent, `noButton`);
 

@@ -1,5 +1,5 @@
 export const createFilmControlsTemplate = (card) => {
-  const {isInWatchlist, isWatched, isFavorite} = card[0];
+  const {isInWatchlist, isWatched, isFavorite} = card;
 
   const isFilmInWatchlist = isInWatchlist[1] ? `checked` : ``;
   const isFilmWatched = isWatched[1] ? `checked` : ``;

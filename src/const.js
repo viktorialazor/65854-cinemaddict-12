@@ -10,7 +10,7 @@ export const MAX_DAYS_GAP = 7;
 export const MAX_HOURS_GAP = 24;
 export const MAX_MINUTES_GAP = 60;
 export const EXTRA_CARD_KEY = `rating`;
-export const RENDER_POSITION = {
+export const RenderPosition = {
   AFTERBEGIN: `afterbegin`,
   BEFOREEND: `beforeend`
 };
@@ -34,7 +34,7 @@ export const COMMENTS_MIN = 0;
 export const COMMENTS_MAX = 5;
 export const USER_FAN_MIN = 10;
 export const USER_FAN_MAX = 20;
-export const SORT_TYPE = {
+export const SortType = {
   DEFAULT: `default`,
   BY_DATE: `by-date`,
   BY_RATING: `by-rating`

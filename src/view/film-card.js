@@ -1,9 +1,8 @@
 import AbstractView from "./abstract.js";
 
 const createFilmCardTemplate = (card) => {
-  const {name, image, rating, year, duration, genre, description, isInWatchlist, isWatched, isFavorite} = card[0];
+  const {name, image, rating, year, duration, genre, description, isInWatchlist, isWatched, isFavorite, comments} = card;
   const genreFilm = genre[0];
-  const comments = card[1];
   const commentsQuantity = comments.length;
 
   return (
