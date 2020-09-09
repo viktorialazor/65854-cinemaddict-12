@@ -11,62 +11,90 @@ export const isFilmInFilter = () => {
   return isFilter ? `film-card__controls-item--active` : ``;
 };
 
-export const getExtraCard = (filmsCards, commentsFilm, key) => {
+export const getExtraCard = (filmsCards, key) => {
   let number = 0;
-  let index = 0;
+  let indexCard = 0;
 
   if (key === EXTRA_CARD_KEY) {
-    filmsCards.forEach((filmCard, indexCard) => {
-      if (parseFloat(filmCard.rating) > number) {
-        number = parseFloat(filmCard.rating);
-        index = indexCard;
+    filmsCards.forEach((item, index) => {
+      if (item !== ``) {
+        if (parseFloat(item.rating) > number) {
+          number = parseFloat(item.rating);
+          indexCard = index;
+        }
       }
     });
   } else {
-    commentsFilm.forEach((comment, indexCard) => {
-      if (parseInt(comment.length, 10) > number) {
-        number = parseInt(comment.length, 10);
-        index = indexCard;
+    filmsCards.forEach((item, index) => {
+      if (item !== ``) {
+        if (parseInt(item.comments.length, 10) > number) {
+          number = parseInt(item.comments.length, 10);
+          indexCard = index;
+        }
       }
     });
   }
 
   return {
-    extraCard: filmsCards[index],
-    commentsCard: commentsFilm[index],
-    indexCard: index
+    extraCard: filmsCards[indexCard],
+    indexCard
   };
 };
 
-export const getTopCards = (filmsCards, commentsFilm) => {
+export const getTopCards = (filmsCards) => {
   let topCards = [];
-  let commentsList = [];
   let filmsCardsList = filmsCards.slice();
-  let filmsCommentsList = commentsFilm.slice();
 
   for (let i = 0; i < Math.min(filmsCards.length, FILM_EXTRA_COUNT); i++) {
-    let topCard = getExtraCard(filmsCardsList, filmsCommentsList, `rating`);
+    let topCard = getExtraCard(filmsCardsList, `rating`);
     topCards.push(topCard.extraCard);
-    commentsList.push(topCard.commentsCard);
     filmsCardsList.splice(topCard.indexCard, 1, ``);
-    filmsCommentsList.splice(topCard.indexCard, 1, ``);
   }
 
-  return [topCards, commentsList];
+  return topCards;
 };
 
-export const getMostCommentedCards = (filmsCards, commentsFilm) => {
+export const getMostCommentedCards = (filmsCards) => {
   let mostCommentedCards = [];
-  let cardsList = [];
-  let filmsCommentsList = commentsFilm.slice();
   let filmsCardsList = filmsCards.slice();
 
   for (let i = 0; i < Math.min(filmsCards.length, FILM_EXTRA_COUNT); i++) {
-    let mostCommentedCard = getExtraCard(filmsCardsList, filmsCommentsList, `comments`);
-    cardsList.push(mostCommentedCard.extraCard);
-    mostCommentedCards.push(mostCommentedCard.commentsCard);
-    filmsCommentsList.splice(mostCommentedCard.indexCard, 1, ``);
+    let mostCommentedCard = getExtraCard(filmsCardsList, `comments`);
+    mostCommentedCards.push(mostCommentedCard.extraCard);
     filmsCardsList.splice(mostCommentedCard.indexCard, 1, ``);
   }
-  return [cardsList, mostCommentedCards];
+
+  return mostCommentedCards;
+};
+
+const getWeightData = (dataA, dataB) => {
+  if (dataA === dataB) {
+    return 0;
+  } else if (dataA < dataB) {
+    return 1;
+  } else if (dataA > dataB) {
+    return -1;
+  } else {
+    return null;
+  }
+};
+
+export const sortByDate = (cardA, cardB) => {
+  const weight = getWeightData(cardA.year, cardB.year);
+
+  if (weight !== null) {
+    return weight;
+  }
+
+  return cardB.year - cardA.year;
+};
+
+export const sortByRating = (cardA, cardB) => {
+  const weight = getWeightData(cardA.rating, cardB.rating);
+
+  if (weight !== null) {
+    return weight;
+  }
+
+  return cardB.rating - cardA.rating;
 };

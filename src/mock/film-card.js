@@ -1,6 +1,7 @@
 import {RATING_MIN, RATING_MAX} from "../const.js";
 import {getRandomInteger, getRandomFloat} from "../utils/common.js";
 import {isFilmInFilter} from "../utils/card.js";
+import {generateComments} from "./comments.js";
 
 const generateRating = () => {
   return getRandomFloat(RATING_MIN, RATING_MAX);
@@ -160,6 +161,7 @@ export const generateFilmCard = () => {
     description: generateDescription(),
     isInWatchlist: isFilmInFilter(),
     isWatched: isFilmInFilter(),
-    isFavorite: isFilmInFilter()
+    isFavorite: isFilmInFilter(),
+    comments: generateComments()
   };
 };
