@@ -1,6 +1,6 @@
-export const createFilmCommentsTemplate = (card) => {
+export const createFilmCommentsTemplate = (data) => {
 
-  const comments = card;
+  const {comments} = data;
   let filmComments = ``;
 
   if (comments.length >= 1) {

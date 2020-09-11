@@ -1,4 +1,4 @@
-export const FILM_COUNT = 22;
+export const FILM_COUNT = 4;
 export const CARD_COUNT_PER_STEP = 5;
 export const FILM_LIST_COUNT = 2;
 export const FILM_EXTRA_COUNT = 2;

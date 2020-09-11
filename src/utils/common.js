@@ -16,3 +16,17 @@ export const getRandomFloat = (from = 1, to = 10) => {
 
   return number;
 };
+
+export const updateCard = (cards, cardUpdate) => {
+  const index = cards.findIndex((card) => card.id === cardUpdate.id);
+
+  if (index === -1) {
+    return cards;
+  }
+
+  return [
+    ...cards.slice(0, index),
+    cardUpdate,
+    ...cards.slice(index + 1)
+  ];
+};
