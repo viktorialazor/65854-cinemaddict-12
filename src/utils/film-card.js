@@ -1,16 +1,36 @@
 import {EXTRA_CARD_KEY, FILM_EXTRA_COUNT} from "../const.js";
 import {getRandomInteger} from "./common.js";
+import moment from "moment";
+import momentDurationFormat from "moment-duration-format";
+
+momentDurationFormat(moment);
 
 export const humanizeDate = (dueDate) => {
   return dueDate.toLocaleString(`en-US`, {year: `numeric`, month: `numeric`, day: `numeric`, hour: `numeric`, minute: `numeric`});
 };
 
+export const formatCommentDate = (commentDate) => {
+  if (!(commentDate instanceof Date)) {
+    return ``;
+  }
+
+  return moment(commentDate).format(`YYYY/MM/DD hh:mm`);
+};
+
+export const formatReleaseDate = (releaseDate) => {
+  if (!(releaseDate instanceof Date)) {
+    return ``;
+  }
+
+  return moment(releaseDate).format(`DD MMMM YYYY`);
+};
+
+export const formatFilmDuration = (filmDuration) => {
+  return moment.duration(filmDuration, `minutes`).format(`h[h] mm[m]`);
+};
+
 export const isFilmInFilter = () => {
   return Boolean(getRandomInteger(0, 1));
-
-  // const isFilter = Boolean(getRandomInteger(0, 1));
-
-  // return isFilter ? `film-card__controls-item--active` : ``;
 };
 
 export const getExtraCard = (filmsCards, key) => {
