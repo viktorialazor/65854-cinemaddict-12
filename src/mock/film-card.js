@@ -1,7 +1,9 @@
 import {RATING_MIN, RATING_MAX} from "../const.js";
 import {getRandomInteger, getRandomFloat} from "../utils/common.js";
-import {isFilmInFilter} from "../utils/card.js";
+import {isFilmInFilter} from "../utils/film-card.js";
 import {generateComments} from "./comments.js";
+
+const generateId = () => Date.now() + parseInt(Math.random() * 10000, 10);
 
 const generateRating = () => {
   return getRandomFloat(RATING_MIN, RATING_MAX);
@@ -146,6 +148,7 @@ export const generateFilmCard = () => {
   const info = generateInfo();
 
   return {
+    id: generateId(),
     name: info.name,
     image: `./images/posters/${info.image}`,
     rating: generateRating(),
@@ -160,8 +163,11 @@ export const generateFilmCard = () => {
     genre: info.genre,
     description: generateDescription(),
     isInWatchlist: isFilmInFilter(),
+    // isInWatchlist: isFilmInFilter(),
     isWatched: isFilmInFilter(),
+    // isWatched: isFilmInFilter(),
     isFavorite: isFilmInFilter(),
+    // isFavorite: isFilmInFilter(),
     comments: generateComments()
   };
 };

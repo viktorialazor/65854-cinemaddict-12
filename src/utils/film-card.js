@@ -6,13 +6,15 @@ export const humanizeDate = (dueDate) => {
 };
 
 export const isFilmInFilter = () => {
-  const isFilter = Boolean(getRandomInteger(0, 1));
+  return Boolean(getRandomInteger(0, 1));
 
-  return isFilter ? `film-card__controls-item--active` : ``;
+  // const isFilter = Boolean(getRandomInteger(0, 1));
+
+  // return isFilter ? `film-card__controls-item--active` : ``;
 };
 
 export const getExtraCard = (filmsCards, key) => {
-  let number = 0;
+  let number = -1;
   let indexCard = 0;
 
   if (key === EXTRA_CARD_KEY) {

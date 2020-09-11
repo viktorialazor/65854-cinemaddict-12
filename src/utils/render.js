@@ -20,6 +20,24 @@ export const render = (container, element, place) => {
   }
 };
 
+export const replace = (newElement, oldElement) => {
+  if (oldElement instanceof Abstract) {
+    oldElement = oldElement.getElement();
+  }
+
+  if (newElement instanceof Abstract) {
+    newElement = newElement.getElement();
+  }
+
+  const parent = oldElement.parentElement;
+
+  if (parent === null || oldElement === null || newElement === null) {
+    throw new Error(`Can't replace unexisting elements`);
+  }
+
+  parent.replaceChild(newElement, oldElement);
+};
+
 export const renderTemplate = (container, template, place) => {
   if (container instanceof Abstract) {
     container = container.getElement();

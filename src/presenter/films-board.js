@@ -1,22 +1,24 @@
 import {CARD_COUNT_PER_STEP, FILM_EXTRA_COUNT, RenderPosition, SortType} from "../const.js";
-import {getTopCards, getMostCommentedCards, sortByDate, sortByRating} from "../utils/card.js";
+import {getTopCards, getMostCommentedCards, sortByDate, sortByRating} from "../utils/film-card.js";
 import {render, remove} from "../utils/render.js";
+import {updateCard} from "../utils/common.js";
 import SortView from "../view/sort.js";
 import FilmsBoardView from "../view/films-board.js";
 import ShowMoreButtonView from "../view/show-more-button.js";
 import FilmsListView from "../view/films-list.js";
 import FilmsListContainerView from "../view/films-list-container.js";
 import FilmsListTitleView from "../view/films-list-title.js";
-import FilmCardView from "../view/film-card.js";
 import FilmsListExtraView from "../view/films-list-extra.js";
-import FilmDetailsView from "../view/film-details.js";
 import NoFilmCardsView from "../view/no-film-card.js";
+import CardPresenter from "./film-card.js";
 
 export default class FilmsBoardPresenter {
   constructor(filmsBoardContainer) {
     this._filmsBoardContainer = filmsBoardContainer;
     this._renderedCardCount = CARD_COUNT_PER_STEP;
     this._currentSortType = SortType.DEFAULT;
+    this._cardPresenter = {};
+    this._cardRatedPresenter = [];
 
     this._sortComponent = new SortView();
     this._filmsBoardComponent = new FilmsBoardView();
@@ -26,6 +28,8 @@ export default class FilmsBoardPresenter {
     this._noFilmCardsComponent = new NoFilmCardsView();
     this._showMoreButtonComponent = new ShowMoreButtonView();
 
+    this._handleCardChange = this._handleCardChange.bind(this);
+    this._handleModeChange = this._handleModeChange.bind(this);
     this._handleShowMoreButtonClick = this._handleShowMoreButtonClick.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
   }
@@ -40,6 +44,30 @@ export default class FilmsBoardPresenter {
     render(this._filmsBoardComponent, this._filmsListComponent, RenderPosition.BEFOREEND);
 
     this._renderFilmsBoard();
+  }
+
+  _handleCardChange(updatedCard) {
+    this._cardsFilms = updateCard(this._cardsFilms, updatedCard);
+    this._cardsFilmsList = updateCard(this._cardsFilmsList, updatedCard);
+    this._cardPresenter[updatedCard.id].init(this._filmsListContainerComponent, updatedCard);
+    this._cardRatedPresenter.forEach((cardRated) => {
+      if (parseInt(Object.keys(cardRated), 10) === parseInt(updatedCard.id, 10)) {
+        let cardRatedNew = Object.values(cardRated);
+        cardRatedNew[0].init(this._filmsListContainerComponent, updatedCard);
+      }
+    });
+  }
+
+  _handleModeChange() {
+    Object
+      .values(this._cardPresenter)
+      .forEach((presenter) => {
+        presenter.resetView();
+      });
+    this._cardRatedPresenter.forEach((presenter) => {
+      let ratedPresenter = Object.values(presenter);
+      ratedPresenter[0].resetView();
+    });
   }
 
   _sortCards(sortType) {
@@ -63,11 +91,16 @@ export default class FilmsBoardPresenter {
 
     this._sortCards(sortType);
     this._clearCradsList();
-    this._renderCards(0, Math.min(this._cardsFilms.length, CARD_COUNT_PER_STEP), this._filmsListContainerComponent, `noButton`);
+    this._renderCards(0, Math.min(this._cardsFilms.length, CARD_COUNT_PER_STEP), this._filmsListContainerComponent);
   }
 
   _clearCradsList() {
-    this._filmsListContainerComponent.getElement().innerHTML = ``;
+    Object
+      .values(this._cardPresenter)
+      .forEach((presenter) => {
+        presenter.destroy();
+      });
+    this._cardPresenter = {};
     this._renderedCardCount = CARD_COUNT_PER_STEP;
   }
 
@@ -77,43 +110,14 @@ export default class FilmsBoardPresenter {
   }
 
   _renderCard(position, card) {
-    const cardComponent = new FilmCardView(card);
-    const cardDetailsComponent = new FilmDetailsView(card);
-
-    const clickCloseButton = () => {
-      this._filmsBoardContainer.removeChild(cardDetailsComponent.getElement());
-      cardDetailsComponent.removeElement();
-      document.removeEventListener(`keydown`, onEscKeyDown);
-    };
-
-    const onEscKeyDown = (evt) => {
-      if (evt.key === `Escape` || evt.key === `Esc`) {
-        evt.preventDefault();
-        this._filmsBoardContainer.removeChild(cardDetailsComponent.getElement());
-        cardDetailsComponent.removeElement();
-        document.removeEventListener(`keydown`, onEscKeyDown);
-      }
-    };
-
-    cardComponent.setDetailsClickHandler(() => {
-      this._filmsBoardContainer.appendChild(cardDetailsComponent.getElement());
-      cardDetailsComponent.setCloseClickHandler(clickCloseButton);
-      document.addEventListener(`keydown`, onEscKeyDown);
-    }, `.film-card__poster`);
-
-    cardComponent.setDetailsClickHandler(() => {
-      this._filmsBoardContainer.appendChild(cardDetailsComponent.getElement());
-      cardDetailsComponent.setCloseClickHandler(clickCloseButton);
-      document.addEventListener(`keydown`, onEscKeyDown);
-    }, `.film-card__title`);
-
-    cardComponent.setDetailsClickHandler(() => {
-      this._filmsBoardContainer.appendChild(cardDetailsComponent.getElement());
-      cardDetailsComponent.setCloseClickHandler(clickCloseButton);
-      document.addEventListener(`keydown`, onEscKeyDown);
-    }, `.film-card__comments`);
-
-    render(position, cardComponent, RenderPosition.BEFOREEND);
+    const cardPresenter = new CardPresenter(this._filmsBoardContainer, this._handleCardChange, this._handleModeChange);
+    cardPresenter.init(position, card);
+    if (!this._cardPresenter.hasOwnProperty([card.id])) {
+      this._cardPresenter[card.id] = cardPresenter;
+    } else {
+      let cardRated = {[card.id]: cardPresenter};
+      this._cardRatedPresenter.push(cardRated);
+    }
   }
 
   _renderCards(from, to, position) {
@@ -191,7 +195,7 @@ export default class FilmsBoardPresenter {
     render(this._filmsListComponent, this._filmsListTitleComponent, RenderPosition.BEFOREEND);
     render(this._filmsListComponent, this._filmsListContainerComponent, RenderPosition.BEFOREEND);
 
-    this._renderCards(0, Math.min(this._cardsFilms.length, CARD_COUNT_PER_STEP), this._filmsListContainerComponent, `noButton`);
+    this._renderCards(0, Math.min(this._cardsFilms.length, CARD_COUNT_PER_STEP), this._filmsListContainerComponent);
 
     this._renderFilmsExtra();
 
