@@ -2,11 +2,19 @@ import {RATING_MIN, RATING_MAX} from "../const.js";
 import {getRandomInteger, getRandomFloat} from "../utils/common.js";
 import {isFilmInFilter} from "../utils/film-card.js";
 import {generateComments} from "./comments.js";
+import {formatReleaseDate, formatFilmDuration} from "../utils/film-card.js";
 
 const generateId = () => Date.now() + parseInt(Math.random() * 10000, 10);
 
 const generateRating = () => {
   return getRandomFloat(RATING_MIN, RATING_MAX);
+};
+
+const generateReleaseDate = (year, month, day) => {
+  const releaseDate = new Date();
+  releaseDate.setFullYear(year, month, day);
+
+  return new Date(releaseDate);
 };
 
 const generateInfo = () => {
@@ -18,10 +26,10 @@ const generateInfo = () => {
       director: `John Cromwell, A. Edward Sutherland`,
       writers: `Benjamin Glazer, Arthur Hopkins, Julian Johnson`,
       actors: `Hal Skelly, Nancy Carroll, Dorothy Revier`,
-      releaseDate: `28 August 1929`,
+      releaseDate: formatReleaseDate(generateReleaseDate(`1929`, `07`, `28`)),
       country: `USA`,
       year: `1929`,
-      duration: `1h 55m`,
+      duration: formatFilmDuration(115),
       age: `18`,
       genre: [`Musical`, `Film-Noir`, `Mystery`]
     },
@@ -31,10 +39,10 @@ const generateInfo = () => {
       director: `JArmand Schaefer`,
       writers: `Lindsley Parsons`,
       actors: `John Wayne, Nancy Shubert, Lane Chandler`,
-      releaseDate: `15 December 1933`,
+      releaseDate: formatReleaseDate(generateReleaseDate(`1933`, `11`, `15`)),
       country: `USA`,
       year: `1933`,
-      duration: `54m`,
+      duration: formatFilmDuration(54),
       age: `16`,
       genre: [`Western`, `Action`, `Drama`, `Romance`]
     },
@@ -44,10 +52,10 @@ const generateInfo = () => {
       director: `Otto Preminger`,
       writers: `Walter Newman, Lewis Meltzer`,
       actors: `Frank Sinatra, Kim Novak, Eleanor Parker`,
-      releaseDate: `15 December 1955`,
+      releaseDate: formatReleaseDate(generateReleaseDate(`1955`, `11`, `15`)),
       country: `USA`,
       year: `1955`,
-      duration: `1h 59m`,
+      duration: formatFilmDuration(119),
       age: `16`,
       genre: [`Drama`, `Crime`, `Romance`]
     },
@@ -57,10 +65,10 @@ const generateInfo = () => {
       director: `Nicholas Webster`,
       writers: `Glenville Mareth, Paul L. Jacobson`,
       actors: `John Call, Leonard Hicks, Vincent Beck`,
-      releaseDate: `14 November 1964`,
+      releaseDate: formatReleaseDate(generateReleaseDate(`1964`, `10`, `14`)),
       country: `USA`,
       year: `1964`,
-      duration: `1h 21m`,
+      duration: formatFilmDuration(81),
       age: `8`,
       genre: [`Comedy`, `Adventure`, `Family`]
     },
@@ -70,10 +78,10 @@ const generateInfo = () => {
       director: `Dave Fleischer`,
       writers: `Max Fleischer, Adolph Zukor`,
       actors: `Jack Mercer, Mae Questel, Gus Wickie, Lou Fleischer`,
-      releaseDate: `November 27 1936`,
+      releaseDate: formatReleaseDate(generateReleaseDate(`1936`, `10`, `27`)),
       country: `USA`,
       year: `1936`,
-      duration: `16m`,
+      duration: formatFilmDuration(16),
       age: `8`,
       genre: [`Cartoon`, `Comedy`, `Family`]
     },
@@ -83,10 +91,10 @@ const generateInfo = () => {
       director: `Anthony Mann`,
       writers: `Anne Wigton, Heinz Herald, Richard Weil`,
       actors: `Erich von Stroheim, Mary Beth Hughes, Dan Duryea`,
-      releaseDate: `30 March 1945`,
+      releaseDate: formatReleaseDate(generateReleaseDate(`1945`, `02`, `30`)),
       country: `USA`,
       year: `1945`,
-      duration: `1h 18m`,
+      duration: formatFilmDuration(78),
       age: `18`,
       genre: [`Mystery`, `Drama`, `Film-Noir`, `Romance`]
     },
@@ -96,10 +104,10 @@ const generateInfo = () => {
       director: `John Cromwell`,
       writers: `Jo Swerling, Rose Franken`,
       actors: `Carole Lombard, James Stewart, Charles Coburn`,
-      releaseDate: `February 10 1939`,
+      releaseDate: formatReleaseDate(generateReleaseDate(`1939`, `01`, `10`)),
       country: `USA`,
       year: `1939`,
-      duration: `1h 32m`,
+      duration: formatFilmDuration(92),
       age: `16`,
       genre: [`Comedy`, `Drama`, `Romance`]
     }
@@ -163,11 +171,8 @@ export const generateFilmCard = () => {
     genre: info.genre,
     description: generateDescription(),
     isInWatchlist: isFilmInFilter(),
-    // isInWatchlist: isFilmInFilter(),
     isWatched: isFilmInFilter(),
-    // isWatched: isFilmInFilter(),
     isFavorite: isFilmInFilter(),
-    // isFavorite: isFilmInFilter(),
     comments: generateComments()
   };
 };
