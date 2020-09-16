@@ -1,4 +1,4 @@
-import {UserAction, UpdateType} from "../const.js";
+import {UserAction, UpdateType, CommentAlt, CommentImgPath} from "../const.js";
 import {generateId, getDate} from "../utils/common.js";
 import {generateCommentAuthor} from "../utils/film-card.js";
 import SmartView from "./smart.js";
@@ -153,16 +153,16 @@ export default class FilmDetailsView extends SmartView {
 
     switch (emoji) {
       case `emoji-smile`:
-        emojiImg = `./images/emoji/smile.png`;
+        emojiImg = CommentImgPath.SMILE;
         break;
       case `emoji-sleeping`:
-        emojiImg = `./images/emoji/sleeping.png`;
+        emojiImg = CommentImgPath.SLEEPING;
         break;
       case `emoji-puke`:
-        emojiImg = `./images/emoji/puke.png`;
+        emojiImg = CommentImgPath.PUKE;
         break;
       case `emoji-angry`:
-        emojiImg = `./images/emoji/angry.png`;
+        emojiImg = CommentImgPath.ANGRY;
         break;
     }
 
@@ -174,16 +174,16 @@ export default class FilmDetailsView extends SmartView {
 
     switch (alt) {
       case `emoji-smile`:
-        emojiAlt = `smile`;
+        emojiAlt = CommentAlt.SMILE;
         break;
       case `emoji-sleeping`:
-        emojiAlt = `sleeping`;
+        emojiAlt = CommentAlt.SLEEPING;
         break;
       case `emoji-puke`:
-        emojiAlt = `puke`;
+        emojiAlt = CommentAlt.PUKE;
         break;
       case `emoji-angry`:
-        emojiAlt = `angry`;
+        emojiAlt = CommentAlt.ANGRY;
         break;
     }
 

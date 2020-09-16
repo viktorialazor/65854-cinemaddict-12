@@ -1,3 +1,4 @@
+import {FilterName} from "../const.js";
 import AbstractView from "./abstract.js";
 
 const createFilterItemTemplate = (filter, currentFilterType) => {
@@ -8,16 +9,16 @@ const createFilterItemTemplate = (filter, currentFilterType) => {
 
     switch (nameFilter) {
       case `All`:
-        filterName = `All movies`;
+        filterName = FilterName.ALL_MOVIES;
         break;
       case `Watchlist`:
-        filterName = `Watchlist`;
+        filterName = FilterName.WATCHLIST;
         break;
       case `History`:
-        filterName = `History`;
+        filterName = FilterName.HISTORY;
         break;
       case `Favorites`:
-        filterName = `Favorites`;
+        filterName = FilterName.FAVORITES;
         break;
     }
 
@@ -27,11 +28,7 @@ const createFilterItemTemplate = (filter, currentFilterType) => {
   const filterName = getFilterName(name);
 
   const getFilterCount = (nameFilter, countFilter) => {
-    if (nameFilter === `All` || countFilter > 5) {
-      return ``;
-    } else {
-      return `<span class="main-navigation__item-count">${count}</span>`;
-    }
+    return (nameFilter === `All` || countFilter > 5) ? `` : `<span class="main-navigation__item-count">${count}</span>`;
   };
 
   const filterCount = getFilterCount(name, count);

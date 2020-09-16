@@ -58,3 +58,21 @@ export const FilterType = {
 export const COMMENT_DATE = `YYYY/MM/DD hh:mm`;
 export const RELEASE_FILM_DATE = `DD MMMM YYYY`;
 export const FILM_DURATION = `h[h] mm[m]`;
+export const FilterName = {
+  ALL_MOVIES: `All movies`,
+  WATCHLIST: `Watchlist`,
+  HISTORY: `History`,
+  FAVORITES: `Favorites`
+};
+export const CommentAlt = {
+  SMILE: `smile`,
+  SLEEPING: `sleeping`,
+  PUKE: `puke`,
+  ANGRY: `angry`
+};
+export const CommentImgPath = {
+  SMILE: `./images/emoji/smile.png`,
+  SLEEPING: `./images/emoji/sleeping.png`,
+  PUKE: `./images/emoji/puke.png`,
+  ANGRY: `./images/emoji/angry.png`
+};
