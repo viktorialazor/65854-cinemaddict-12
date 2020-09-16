@@ -1,4 +1,4 @@
-import {EXTRA_CARD_KEY, FILM_EXTRA_COUNT} from "../const.js";
+import {EXTRA_CARD_KEY, FILM_EXTRA_COUNT, COMMENT_AUTHORS, COMMENT_DATE, RELEASE_FILM_DATE, FILM_DURATION} from "../const.js";
 import {getRandomInteger} from "./common.js";
 import moment from "moment";
 import momentDurationFormat from "moment-duration-format";
@@ -14,7 +14,7 @@ export const formatCommentDate = (commentDate) => {
     return ``;
   }
 
-  return moment(commentDate).format(`YYYY/MM/DD hh:mm`);
+  return moment(commentDate).format(COMMENT_DATE);
 };
 
 export const formatReleaseDate = (releaseDate) => {
@@ -22,11 +22,11 @@ export const formatReleaseDate = (releaseDate) => {
     return ``;
   }
 
-  return moment(releaseDate).format(`DD MMMM YYYY`);
+  return moment(releaseDate).format(RELEASE_FILM_DATE);
 };
 
 export const formatFilmDuration = (filmDuration) => {
-  return moment.duration(filmDuration, `minutes`).format(`h[h] mm[m]`);
+  return moment.duration(filmDuration, `minutes`).format(FILM_DURATION);
 };
 
 export const isFilmInFilter = () => {
@@ -119,4 +119,10 @@ export const sortByRating = (cardA, cardB) => {
   }
 
   return cardB.rating - cardA.rating;
+};
+
+export const generateCommentAuthor = () => {
+  const randomIndex = getRandomInteger(0, COMMENT_AUTHORS.length - 1);
+
+  return COMMENT_AUTHORS[randomIndex];
 };

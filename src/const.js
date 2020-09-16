@@ -1,4 +1,4 @@
-export const FILM_COUNT = 4;
+export const FILM_COUNT = 10;
 export const CARD_COUNT_PER_STEP = 5;
 export const FILM_LIST_COUNT = 2;
 export const FILM_EXTRA_COUNT = 2;
@@ -39,3 +39,22 @@ export const SortType = {
   BY_DATE: `by-date`,
   BY_RATING: `by-rating`
 };
+export const UserAction = {
+  UPDATE_CARD: `UPDATE_CARD`,
+  ADD_CARD: `ADD_CARD`,
+  DELETE_CARD: `DELETE_CARD`
+};
+export const UpdateType = {
+  PATCH: `PATCH`,
+  MINOR: `MINOR`,
+  MAJOR: `MAJOR`
+};
+export const FilterType = {
+  ALL: `all`,
+  WATCHLIST: `watchlist`,
+  HISTORY: `history`,
+  FAVORITES: `favorites`
+};
+export const COMMENT_DATE = `YYYY/MM/DD hh:mm`;
+export const RELEASE_FILM_DATE = `DD MMMM YYYY`;
+export const FILM_DURATION = `h[h] mm[m]`;

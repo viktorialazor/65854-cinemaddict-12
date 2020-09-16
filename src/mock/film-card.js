@@ -1,10 +1,10 @@
 import {RATING_MIN, RATING_MAX} from "../const.js";
-import {getRandomInteger, getRandomFloat} from "../utils/common.js";
+import {getRandomInteger, getRandomFloat, generateId} from "../utils/common.js";
 import {isFilmInFilter} from "../utils/film-card.js";
 import {generateComments} from "./comments.js";
 import {formatReleaseDate, formatFilmDuration} from "../utils/film-card.js";
 
-const generateId = () => Date.now() + parseInt(Math.random() * 10000, 10);
+// const generateId = () => Date.now() + parseInt(Math.random() * 10000, 10);
 
 const generateRating = () => {
   return getRandomFloat(RATING_MIN, RATING_MAX);

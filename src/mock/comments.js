@@ -1,6 +1,6 @@
-import {YEAR, MAX_MONTH_GAP, MAX_DAYS_GAP, MAX_HOURS_GAP, MAX_MINUTES_GAP, COMMENT_EMOJI, COMMENT_AUTHORS, COMMENT_TEXT, COMMENTS_MIN, COMMENTS_MAX} from "../const.js";
-import {getRandomInteger} from "../utils/common.js";
-import {formatCommentDate} from "../utils/film-card.js";
+import {YEAR, MAX_MONTH_GAP, MAX_DAYS_GAP, MAX_HOURS_GAP, MAX_MINUTES_GAP, COMMENT_EMOJI, COMMENT_TEXT, COMMENTS_MIN, COMMENTS_MAX} from "../const.js";
+import {getRandomInteger, generateId} from "../utils/common.js";
+import {formatCommentDate, generateCommentAuthor} from "../utils/film-card.js";
 
 const generateCommentDate = () => {
   const monthGap = getRandomInteger(-MAX_MONTH_GAP, MAX_MONTH_GAP);
@@ -21,12 +21,6 @@ const generateCommentEmoji = () => {
   return COMMENT_EMOJI[randomIndex];
 };
 
-const generateCommentAuthor = () => {
-  const randomIndex = getRandomInteger(0, COMMENT_AUTHORS.length - 1);
-
-  return COMMENT_AUTHORS[randomIndex];
-};
-
 const generateCommentText = () => {
   const randomIndex = getRandomInteger(0, COMMENT_TEXT.length - 1);
 
@@ -43,6 +37,7 @@ export const generateComments = () => {
     const alt = img.replace(`.png`, ``);
 
     let comment = {
+      id: generateId(),
       author: generateCommentAuthor(),
       date: formatCommentDate(commentDate),
       text: generateCommentText(),

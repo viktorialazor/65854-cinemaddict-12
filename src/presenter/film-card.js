@@ -1,4 +1,4 @@
-import {RenderPosition} from "../const.js";
+import {RenderPosition, UserAction, UpdateType} from "../const.js";
 import FilmCardView from "../view/film-card.js";
 import FilmDetailsView from "../view/film-details.js";
 import {render, replace, remove} from "../utils/render.js";
@@ -13,9 +13,11 @@ export default class Card {
     this._filmsBoardContainer = filmsBoardContainer;
     this._changeData = changeData;
     this._changeMode = changeMode;
+    this._commentsModel = null;
 
     this._cardComponent = null;
     this._cardDetailsComponent = null;
+    this._commentsContainer = null;
     this._mode = Mode.DEFAULT;
 
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
@@ -28,12 +30,18 @@ export default class Card {
 
   init(position, card) {
     this._card = card;
+    this._comments = card.comments;
 
     const prevCardComponent = this._cardComponent;
     const prevCardEditComponent = this._cardDetailsComponent;
 
     this._cardComponent = new FilmCardView(card);
     this._cardDetailsComponent = new FilmDetailsView(card, this._changeData);
+
+    this._commentsContainer = this._cardDetailsComponent.getElement().querySelector(`.film-details__comments-list`);
+    this._cardCommentComponent = null;
+
+    this._commentsList = ``;
 
     this._cardComponent.setDetailsClickHandler(this._handleDetailsClick, `.film-card__poster`);
     this._cardComponent.setDetailsClickHandler(this._handleDetailsClick, `.film-card__title`);
@@ -63,7 +71,7 @@ export default class Card {
 
   _clickCloseButton() {
     this._cardDetailsComponent.getElement().remove();
-    this._cardDetailsComponent.removeElement();
+
     document.removeEventListener(`keydown`, this._escKeyDownHandler);
     this._mode = Mode.DEFAULT;
   }
@@ -89,6 +97,8 @@ export default class Card {
 
   _handleFavoriteClick() {
     this._changeData(
+        UserAction.UPDATE_CARD,
+        UpdateType.PATCH,
         Object.assign(
             {},
             this._card,
@@ -101,6 +111,8 @@ export default class Card {
 
   _handleWatchlistClick() {
     this._changeData(
+        UserAction.UPDATE_CARD,
+        UpdateType.PATCH,
         Object.assign(
             {},
             this._card,
@@ -113,6 +125,8 @@ export default class Card {
 
   _handleWatchedClick() {
     this._changeData(
+        UserAction.UPDATE_CARD,
+        UpdateType.PATCH,
         Object.assign(
             {},
             this._card,
