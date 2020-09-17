@@ -148,7 +148,7 @@ export default class FilmDetailsView extends SmartView {
     return id;
   }
 
-  _getEmoji(emoji) {
+  _getEmojiImg(emoji) {
     let emojiImg = ``;
 
     switch (emoji) {
@@ -202,7 +202,7 @@ export default class FilmDetailsView extends SmartView {
           author: generateCommentAuthor(),
           date: getDate(),
           text: this._newCommentText.value,
-          emoji: this._getEmoji(this._getEmojiId()),
+          emoji: this._getEmojiImg(this._getEmojiId()),
           alt: this._getEmojiAlt(this._getEmojiId())
         };
 
