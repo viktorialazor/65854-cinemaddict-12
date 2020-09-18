@@ -1,4 +1,4 @@
-export const FILM_COUNT = 4;
+export const FILM_COUNT = 10;
 export const CARD_COUNT_PER_STEP = 5;
 export const FILM_LIST_COUNT = 2;
 export const FILM_EXTRA_COUNT = 2;
@@ -38,4 +38,41 @@ export const SortType = {
   DEFAULT: `default`,
   BY_DATE: `by-date`,
   BY_RATING: `by-rating`
+};
+export const UserAction = {
+  UPDATE_CARD: `UPDATE_CARD`,
+  ADD_CARD: `ADD_CARD`,
+  DELETE_CARD: `DELETE_CARD`
+};
+export const UpdateType = {
+  PATCH: `PATCH`,
+  MINOR: `MINOR`,
+  MAJOR: `MAJOR`
+};
+export const FilterType = {
+  ALL: `all`,
+  WATCHLIST: `watchlist`,
+  HISTORY: `history`,
+  FAVORITES: `favorites`
+};
+export const COMMENT_DATE = `YYYY/MM/DD hh:mm`;
+export const RELEASE_FILM_DATE = `DD MMMM YYYY`;
+export const FILM_DURATION = `h[h] mm[m]`;
+export const FilterName = {
+  ALL_MOVIES: `All movies`,
+  WATCHLIST: `Watchlist`,
+  HISTORY: `History`,
+  FAVORITES: `Favorites`
+};
+export const CommentAlt = {
+  SMILE: `smile`,
+  SLEEPING: `sleeping`,
+  PUKE: `puke`,
+  ANGRY: `angry`
+};
+export const CommentImgPath = {
+  SMILE: `./images/emoji/smile.png`,
+  SLEEPING: `./images/emoji/sleeping.png`,
+  PUKE: `./images/emoji/puke.png`,
+  ANGRY: `./images/emoji/angry.png`
 };

@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export const getRandomInteger = (from = 0, to = 1) => {
   const lower = Math.ceil(Math.min(from, to));
   const upper = Math.floor(Math.max(from, to));
@@ -17,16 +19,10 @@ export const getRandomFloat = (from = 1, to = 10) => {
   return number;
 };
 
-export const updateCard = (cards, cardUpdate) => {
-  const index = cards.findIndex((card) => card.id === cardUpdate.id);
+export const generateId = () => Date.now() + parseInt(Math.random() * 10000, 10);
 
-  if (index === -1) {
-    return cards;
-  }
+export const getDate = () => {
+  const currentDate = new Date();
 
-  return [
-    ...cards.slice(0, index),
-    cardUpdate,
-    ...cards.slice(index + 1)
-  ];
+  return moment(currentDate).format(`YYYY/MM/DD hh:mm`);
 };
