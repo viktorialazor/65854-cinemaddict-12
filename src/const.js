@@ -1,4 +1,4 @@
-export const FILM_COUNT = 10;
+export const FILM_COUNT = 22;
 export const CARD_COUNT_PER_STEP = 5;
 export const FILM_LIST_COUNT = 2;
 export const FILM_EXTRA_COUNT = 2;
@@ -47,7 +47,9 @@ export const UserAction = {
 export const UpdateType = {
   PATCH: `PATCH`,
   MINOR: `MINOR`,
-  MAJOR: `MAJOR`
+  MAJOR: `MAJOR`,
+  STATS: `STATS`,
+  COMMENT: `COMMENT`
 };
 export const FilterType = {
   ALL: `all`,
@@ -75,4 +77,11 @@ export const CommentImgPath = {
   SLEEPING: `./images/emoji/sleeping.png`,
   PUKE: `./images/emoji/puke.png`,
   ANGRY: `./images/emoji/angry.png`
+};
+export const FilterStatisticType = {
+  ALL: `all-time`,
+  TODAY: `today`,
+  WEEK: `week`,
+  MONTH: `month`,
+  YEAR: `year`
 };

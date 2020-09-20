@@ -11,9 +11,11 @@ export default class Filter {
     this._currentFilter = null;
 
     this._filterComponent = null;
+    this._statsActive = false;
 
     this._handleModelEvent = this._handleModelEvent.bind(this);
     this._handleFilterTypeChange = this._handleFilterTypeChange.bind(this);
+    this._handleStatsClick = this._handleStatsClick.bind(this);
 
     this._cardsModel.addObserver(this._handleModelEvent);
     this._filterModel.addObserver(this._handleModelEvent);
@@ -25,8 +27,9 @@ export default class Filter {
     const filters = this._getFilters();
     const prevFilterComponent = this._filterComponent;
 
-    this._filterComponent = new FilterView(filters, this._currentFilter);
+    this._filterComponent = new FilterView(filters, this._currentFilter, this._statsActive);
     this._filterComponent.setFilterTypeChangeHandler(this._handleFilterTypeChange);
+    this._filterComponent.setStatsClickHandler(this._handleStatsClick);
 
     if (prevFilterComponent === null) {
       render(this._filterContainer, this._filterComponent, RenderPosition.BEFOREEND);
@@ -42,11 +45,18 @@ export default class Filter {
   }
 
   _handleFilterTypeChange(filterType) {
-    if (this._currentFilter === filterType) {
+    if (this._currentFilter === filterType && !this._statsActive) {
+      this._statsActive = false;
       return;
     }
 
+    this._statsActive = false;
     this._filterModel.setFilter(UpdateType.MAJOR, filterType);
+  }
+
+  _handleStatsClick() {
+    this._statsActive = true;
+    this._filterModel.setFilter(UpdateType.STATS, FilterType.ALL);
   }
 
   _getFilters() {

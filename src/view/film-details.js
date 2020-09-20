@@ -268,7 +268,7 @@ export default class FilmDetailsView extends SmartView {
   }
 
   _closeDetailsCard(newData) {
-    this._changeEditData(UserAction.UPDATE_CARD, UpdateType.PATCH, FilmDetailsView.parseDataToCard(newData));
+    this._changeEditData(UserAction.UPDATE_CARD, UpdateType.COMMENT, FilmDetailsView.parseDataToCard(newData));
     this.getElement().remove();
   }
 
