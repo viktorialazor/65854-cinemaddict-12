@@ -1,4 +1,4 @@
-import {EXTRA_CARD_KEY, FILM_EXTRA_COUNT, COMMENT_AUTHORS, COMMENT_DATE, RELEASE_FILM_DATE, FILM_DURATION} from "../const.js";
+import {FILM_EXTRA_COUNT, COMMENT_AUTHORS, COMMENT_DATE, RELEASE_FILM_DATE, FILM_DURATION} from "../const.js";
 import {getRandomInteger} from "./common.js";
 import moment from "moment";
 import momentDurationFormat from "moment-duration-format";
@@ -33,60 +33,20 @@ export const isFilmInFilter = () => {
   return Boolean(getRandomInteger(0, 1));
 };
 
-export const getExtraCard = (filmsCards, key) => {
-  let number = -1;
-  let indexCard = 0;
-
-  if (key === EXTRA_CARD_KEY) {
-    filmsCards.forEach((item, index) => {
-      if (item !== ``) {
-        if (parseFloat(item.rating) > number) {
-          number = parseFloat(item.rating);
-          indexCard = index;
-        }
-      }
-    });
-  } else {
-    filmsCards.forEach((item, index) => {
-      if (item !== ``) {
-        if (parseInt(item.comments.length, 10) > number) {
-          number = parseInt(item.comments.length, 10);
-          indexCard = index;
-        }
-      }
-    });
-  }
-
-  return {
-    extraCard: filmsCards[indexCard],
-    indexCard
-  };
-};
-
 export const getTopCards = (filmsCards) => {
-  let topCards = [];
-  let filmsCardsList = filmsCards.slice();
+  let filmsCardsList = filmsCards.slice().filter((filmsCard) => filmsCard.rating !== 0);
+  filmsCardsList = filmsCardsList.sort((cardA, cardB) => parseFloat(cardB.rating) - parseFloat(cardA.rating));
+  filmsCardsList = filmsCardsList.slice(0, Math.min(filmsCardsList.length, FILM_EXTRA_COUNT));
 
-  for (let i = 0; i < Math.min(filmsCards.length, FILM_EXTRA_COUNT); i++) {
-    let topCard = getExtraCard(filmsCardsList, `rating`);
-    topCards.push(topCard.extraCard);
-    filmsCardsList.splice(topCard.indexCard, 1, ``);
-  }
-
-  return topCards;
+  return filmsCardsList;
 };
 
 export const getMostCommentedCards = (filmsCards) => {
-  let mostCommentedCards = [];
-  let filmsCardsList = filmsCards.slice();
+  let filmsCardsList = filmsCards.slice().filter((filmsCard) => filmsCard.comments.length !== 0);
+  filmsCardsList = filmsCardsList.sort((cardA, cardB) => parseInt(cardB.comments.length, 10) - parseInt(cardA.comments.length, 10));
+  filmsCardsList = filmsCardsList.slice(0, Math.min(filmsCardsList.length, FILM_EXTRA_COUNT));
 
-  for (let i = 0; i < Math.min(filmsCards.length, FILM_EXTRA_COUNT); i++) {
-    let mostCommentedCard = getExtraCard(filmsCardsList, `comments`);
-    mostCommentedCards.push(mostCommentedCard.extraCard);
-    filmsCardsList.splice(mostCommentedCard.indexCard, 1, ``);
-  }
-
-  return mostCommentedCards;
+  return filmsCardsList;
 };
 
 const getWeightData = (dataA, dataB) => {
@@ -125,4 +85,14 @@ export const generateCommentAuthor = () => {
   const randomIndex = getRandomInteger(0, COMMENT_AUTHORS.length - 1);
 
   return COMMENT_AUTHORS[randomIndex];
+};
+
+export const getShortDescription = (description) => {
+  let shortDescription = description;
+
+  if (shortDescription.length > 139) {
+    shortDescription = shortDescription.slice(0, 139) + `...`;
+  }
+
+  return shortDescription;
 };

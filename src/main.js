@@ -1,6 +1,6 @@
 import {FILM_COUNT, RenderPosition} from "./const.js";
 import UserProfileView from "./view/user-profile.js";
-import StatisticsView from "./view/statistics.js";
+import FilmsQuantityView from "./view/films-quantity.js";
 import FilmsBoardPresenter from "./presenter/films-board.js";
 import FilterPresenter from "./presenter/filter.js";
 import CardsModel from "./model/cards.js";
@@ -28,4 +28,4 @@ const filterPresenter = new FilterPresenter(siteMainElement, filterModel, cardsM
 filterPresenter.init();
 filmsBoardPresenter.init();
 
-render(siteFooterStatisticsElement, new StatisticsView(cards), RenderPosition.BEFOREEND);
+render(siteFooterStatisticsElement, new FilmsQuantityView(cards), RenderPosition.BEFOREEND);
