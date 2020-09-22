@@ -156,6 +156,7 @@ export const generateFilmCard = () => {
   return {
     id: generateId(),
     name: info.name,
+    title: ``,
     image: `./images/posters/${info.image}`,
     rating: generateRating(),
     director: info.director,
@@ -170,6 +171,7 @@ export const generateFilmCard = () => {
     description: generateDescription(),
     isInWatchlist: isFilmInFilter(),
     isWatched: isFilmInFilter(),
+    watchingDate: null,
     isFavorite: isFilmInFilter(),
     comments: generateComments()
   };

@@ -2,6 +2,8 @@ import {CARD_COUNT_PER_STEP, RenderPosition, SortType, UpdateType, UserAction, F
 import {getTopCards, getMostCommentedCards, sortByDate, sortByRating} from "../utils/film-card.js";
 import {render, remove} from "../utils/render.js";
 import {filter} from "../utils/filter.js";
+import UserProfileView from "../view/user-profile.js";
+import FilmsQuantityView from "../view/films-quantity.js";
 import SortView from "../view/sort.js";
 import FilmsBoardView from "../view/films-board.js";
 import ShowMoreButtonView from "../view/show-more-button.js";
@@ -11,11 +13,12 @@ import FilmsListTitleView from "../view/films-list-title.js";
 import FilmsListExtraView from "../view/films-list-extra.js";
 import NoFilmCardsView from "../view/no-film-card.js";
 import StatisticsView from "../view/statistics.js";
+import LoadingView from "../view/loading.js";
 import CardPresenter from "./film-card.js";
 import {getWatchedFilms} from "../utils/statistic.js";
 
 export default class FilmsBoardPresenter {
-  constructor(filmsBoardContainer, cardsModel, filterModel) {
+  constructor(filmsBoardContainer, cardsModel, filterModel, api) {
     this._filmsBoardContainer = filmsBoardContainer;
     this._cardsModel = cardsModel;
     this._filterModel = filterModel;
@@ -25,8 +28,8 @@ export default class FilmsBoardPresenter {
     this._cardPresenter = {};
     this._cardRatedPresenter = [];
     this._cards = this._cardsModel.getCards();
-    this._topRatedFilms = getTopCards(this._cards);
-    this._mostCommentedFilms = getMostCommentedCards(this._cards);
+    this._isLoading = true;
+    this._api = api;
 
     this._cardsWatched = getWatchedFilms(this._getCards());
 
@@ -35,12 +38,15 @@ export default class FilmsBoardPresenter {
     this._showMoreButtonComponent = null;
     this._filmsRatedList = null;
     this._filmsCommentedList = null;
+    this._userProfileComponent = null;
+    this._filmsQuantityViewComponent = null;
 
     this._filmsBoardComponent = new FilmsBoardView();
     this._filmsListComponent = new FilmsListView();
     this._filmsListContainerComponent = new FilmsListContainerView();
     this._filmsListTitleComponent = new FilmsListTitleView();
     this._noFilmCardsComponent = new NoFilmCardsView();
+    this._loadingComponent = new LoadingView();
 
     this._handleViewAction = this._handleViewAction.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
@@ -75,7 +81,9 @@ export default class FilmsBoardPresenter {
   _handleViewAction(actionType, updateType, update) {
     switch (actionType) {
       case UserAction.UPDATE_CARD:
-        this._cardsModel.updateCard(updateType, update);
+        this._api.updateCard(update).then((response) => {
+          this._cardsModel.updateCard(updateType, response);
+        });
         break;
       case UserAction.ADD_CARD:
         this._cardsModel.addCard(updateType, update);
@@ -126,6 +134,11 @@ export default class FilmsBoardPresenter {
         this._cardsWatched = getWatchedFilms(this._getCards());
         this._renderStatistics();
         break;
+      case UpdateType.INIT:
+        this._isLoading = false;
+        remove(this._loadingComponent);
+        this._renderFilmsBoard();
+        break;
     }
   }
 
@@ -165,16 +178,32 @@ export default class FilmsBoardPresenter {
         this._cardsWatched = filmsWatched.slice();
         break;
       case FilterStatisticType.TODAY:
-        this._cardsWatched = filmsWatched.slice(4, filmsWatched.length);
+        let nowDateStart = new Date();
+        let nowDateEnd = new Date();
+        this._cardsWatched = filmsWatched.slice().filter((card) => {
+          return card.watchingDate > nowDateStart.setHours(0, 0, 0, 0) && card.watchingDate < nowDateEnd.setHours(23, 59, 59, 999);
+        });
         break;
       case FilterStatisticType.WEEK:
-        this._cardsWatched = filmsWatched.slice(3, filmsWatched.length);
+        let nowDateWeek = new Date();
+        const weekAgo = new Date(nowDateWeek.setDate(nowDateWeek.getDate() - 7));
+        this._cardsWatched = filmsWatched.slice().filter((card) => {
+          return card.watchingDate > weekAgo && card.watchingDate < new Date();
+        });
         break;
       case FilterStatisticType.MONTH:
-        this._cardsWatched = filmsWatched.slice(2, filmsWatched.length);
+        let nowDateMonth = new Date();
+        const monthAgo = new Date(nowDateMonth.setMonth(nowDateMonth.getMonth() - 1));
+        this._cardsWatched = filmsWatched.slice().filter((card) => {
+          return card.watchingDate > monthAgo && card.watchingDate < new Date();
+        });
         break;
       case FilterStatisticType.YEAR:
-        this._cardsWatched = filmsWatched.slice(1, filmsWatched.length);
+        let nowDateYear = new Date();
+        const yearAgo = new Date(nowDateYear.setFullYear(nowDateYear.getFullYear() - 1));
+        this._cardsWatched = filmsWatched.slice().filter((card) => {
+          return card.watchingDate > yearAgo && card.watchingDate < new Date();
+        });
         break;
     }
     remove(this._statisticsComponet);
@@ -264,6 +293,10 @@ export default class FilmsBoardPresenter {
     }
   }
 
+  _renderLoading() {
+    render(this._filmsBoardContainer, this._loadingComponent, RenderPosition.AFTERBEGIN);
+  }
+
   _renderNoCards() {
     render(this._filmsListComponent, this._noFilmCardsComponent, RenderPosition.BEFOREEND);
   }
@@ -296,6 +329,7 @@ export default class FilmsBoardPresenter {
     const cardCount = this._getCards().length;
     this._topRatedFilms = getTopCards(this._cards);
     this._mostCommentedFilms = getMostCommentedCards(this._cards);
+    this._statisticType = FilterStatisticType.ALL;
 
     Object
       .values(this._cardPresenter)
@@ -316,6 +350,10 @@ export default class FilmsBoardPresenter {
     remove(this._showMoreButtonComponent);
     remove(this._filmsRatedList);
     remove(this._filmsCommentedList);
+    remove(this._loadingComponent);
+    remove(this._statisticsComponet);
+    remove(this._userProfileComponent);
+    remove(this._filmsQuantityViewComponent);
 
     if (resetRenderedCardCount) {
       this._renderedCardCount = CARD_COUNT_PER_STEP;
@@ -329,7 +367,14 @@ export default class FilmsBoardPresenter {
   }
 
   _renderFilmsBoard() {
+    if (this._isLoading) {
+      this._renderLoading();
+      return;
+    }
+
     const cardCount = this._getCards().length;
+    this._topRatedFilms = getTopCards(this._cards);
+    this._mostCommentedFilms = getMostCommentedCards(this._cards);
 
     if (cardCount === 0) {
       this._renderNoCards();
@@ -338,6 +383,14 @@ export default class FilmsBoardPresenter {
     }
 
     const cards = this._getCards().slice(0, Math.min(cardCount, this._renderedCardCount));
+    const siteHeaderElement = document.querySelector(`.header`);
+    const siteFooterQuantityElement = document.querySelector(`.footer__statistics`);
+
+    this._userProfileComponent = new UserProfileView(this._cards);
+    this._filmsQuantityViewComponent = new FilmsQuantityView(this._cards);
+
+    render(siteHeaderElement, this._userProfileComponent, RenderPosition.BEFOREEND);
+    render(siteFooterQuantityElement, this._filmsQuantityViewComponent, RenderPosition.BEFOREEND);
 
     this._renderSort();
 

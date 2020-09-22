@@ -1,4 +1,4 @@
-import {FILM_EXTRA_COUNT, COMMENT_AUTHORS, COMMENT_DATE, RELEASE_FILM_DATE, FILM_DURATION} from "../const.js";
+import {FILM_EXTRA_COUNT, COMMENT_AUTHORS, COMMENT_DATE, RELEASE_FILM_DATE, FILM_DURATION, MAX_SYMBOLS} from "../const.js";
 import {getRandomInteger} from "./common.js";
 import moment from "moment";
 import momentDurationFormat from "moment-duration-format";
@@ -62,7 +62,9 @@ const getWeightData = (dataA, dataB) => {
 };
 
 export const sortByDate = (cardA, cardB) => {
-  const weight = getWeightData(cardA.year, cardB.year);
+  const cardAYear = cardA.releaseDate.slice(-4);
+  const cardBYear = cardB.releaseDate.slice(-4);
+  const weight = getWeightData(parseInt(cardAYear, 10), parseInt(cardBYear, 10));
 
   if (weight !== null) {
     return weight;
@@ -90,8 +92,8 @@ export const generateCommentAuthor = () => {
 export const getShortDescription = (description) => {
   let shortDescription = description;
 
-  if (shortDescription.length > 139) {
-    shortDescription = shortDescription.slice(0, 139) + `...`;
+  if (shortDescription.length > MAX_SYMBOLS) {
+    shortDescription = shortDescription.slice(0, MAX_SYMBOLS) + `...`;
   }
 
   return shortDescription;

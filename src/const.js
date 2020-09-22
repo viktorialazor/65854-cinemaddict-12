@@ -49,7 +49,8 @@ export const UpdateType = {
   MINOR: `MINOR`,
   MAJOR: `MAJOR`,
   STATS: `STATS`,
-  COMMENT: `COMMENT`
+  COMMENT: `COMMENT`,
+  INIT: `INIT`
 };
 export const FilterType = {
   ALL: `all`,
@@ -85,3 +86,6 @@ export const FilterStatisticType = {
   MONTH: `month`,
   YEAR: `year`
 };
+export const MAX_SYMBOLS = 139;
+export const MINUTES_LENGTH = 3;
+export const MINUTES_IN_HOUR = 60;
