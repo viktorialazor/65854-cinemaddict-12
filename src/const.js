@@ -89,3 +89,5 @@ export const FilterStatisticType = {
 export const MAX_SYMBOLS = 139;
 export const MINUTES_LENGTH = 3;
 export const MINUTES_IN_HOUR = 60;
+export const AUTHORIZATION = `Basic gtz8S752fDN7G3Ua`;
+export const END_POINT = `https://12.ecmascript.pages.academy/cinemaddict/`;

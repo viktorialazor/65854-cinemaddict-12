@@ -82,7 +82,9 @@ export default class FilmsBoardPresenter {
     switch (actionType) {
       case UserAction.UPDATE_CARD:
         this._api.updateCard(update).then((response) => {
-          this._cardsModel.updateCard(updateType, response);
+          if (response) {
+            this._cardsModel.updateCard(updateType, update);
+          }
         });
         break;
       case UserAction.ADD_CARD:
