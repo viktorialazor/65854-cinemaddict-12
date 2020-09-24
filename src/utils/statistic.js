@@ -1,3 +1,4 @@
+import {MINUTES_LENGTH, MINUTES_IN_HOUR} from "../const.js";
 import moment from "moment";
 import momentDurationFormat from "moment-duration-format";
 import {getRandomInteger} from "../utils/common.js";
@@ -23,7 +24,7 @@ export const getFilmDuration = (duration) => {
   let minutes = ``;
   let totalTime = 0;
 
-  if (duration.length < 3) {
+  if (duration.length < MINUTES_LENGTH) {
     totalTime = parseInt(duration, 10);
   } else {
     for (let i = 0; i < duration.length; i++) {
@@ -36,7 +37,7 @@ export const getFilmDuration = (duration) => {
       }
     }
 
-    totalTime = (parseInt(hours, 10) * 60) + parseInt(minutes, 10);
+    totalTime = (parseInt(hours, 10) * MINUTES_IN_HOUR) + parseInt(minutes, 10);
   }
 
   return totalTime;
@@ -51,9 +52,9 @@ export const getFilmsDuration = (cards) => {
     totalTime += getFilmDuration(card.duration);
   });
 
-  if (totalTime > 60) {
-    totalHours = parseInt((totalTime / 60), 10);
-    totalMinutes = totalTime - (totalHours * 60);
+  if (totalTime > MINUTES_IN_HOUR) {
+    totalHours = parseInt((totalTime / MINUTES_IN_HOUR), 10);
+    totalMinutes = totalTime - (totalHours * MINUTES_IN_HOUR);
   } else {
     totalMinutes = totalTime;
   }

@@ -131,7 +131,8 @@ export default class Card {
             {},
             this._card,
             {
-              isWatched: !this._card.isWatched
+              isWatched: !this._card.isWatched,
+              watchingDate: this._card.isWatched === false ? new Date() : null
             }
         )
     );

@@ -1,5 +1,5 @@
 import AbstractView from "./abstract.js";
-import {generateProfileRating} from "../mock/user-profile.js";
+import {generateProfileRating} from "../utils/film-card.js";
 
 const createUserProfileTemplate = (cards) => {
   const profileRating = generateProfileRating(cards);

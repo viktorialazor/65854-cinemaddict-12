@@ -1,31 +1,45 @@
-import {FILM_COUNT, RenderPosition} from "./const.js";
-import UserProfileView from "./view/user-profile.js";
-import FilmsQuantityView from "./view/films-quantity.js";
+import {UpdateType, AUTHORIZATION, END_POINT} from "./const.js";
 import FilmsBoardPresenter from "./presenter/films-board.js";
 import FilterPresenter from "./presenter/filter.js";
 import CardsModel from "./model/cards.js";
 import FilterModel from "./model/filter.js";
-import {generateFilmCard} from "./mock/film-card.js";
-import {render} from "./utils/render.js";
-
-const cards = new Array(FILM_COUNT).fill().map(generateFilmCard);
-
-const cardsModel = new CardsModel();
-cardsModel.setCards(cards);
-
-const filterModel = new FilterModel();
+import Api from "./api.js";
 
 const siteBodyElement = document.querySelector(`body`);
-const siteHeaderElement = siteBodyElement.querySelector(`.header`);
 const siteMainElement = siteBodyElement.querySelector(`.main`);
-const siteFooterElement = siteBodyElement.querySelector(`.footer`);
-const siteFooterStatisticsElement = siteFooterElement.querySelector(`.footer__statistics`);
 
-render(siteHeaderElement, new UserProfileView(cards), RenderPosition.BEFOREEND);
+const api = new Api(END_POINT, AUTHORIZATION);
 
-const filmsBoardPresenter = new FilmsBoardPresenter(siteMainElement, cardsModel, filterModel);
+const cardsModel = new CardsModel();
+const filterModel = new FilterModel();
+const filmsBoardPresenter = new FilmsBoardPresenter(siteMainElement, cardsModel, filterModel, api);
 const filterPresenter = new FilterPresenter(siteMainElement, filterModel, cardsModel);
+
 filterPresenter.init();
 filmsBoardPresenter.init();
 
-render(siteFooterStatisticsElement, new FilmsQuantityView(cards), RenderPosition.BEFOREEND);
+api.getCards()
+.then((movies) => {
+  let getCommentsRequests = [];
+
+  movies.map((movie) => {
+    getCommentsRequests.push(api.getComments(movie.id));
+  });
+
+  Promise.all(getCommentsRequests)
+  .then((filmsComments) => {
+    movies.map((movie, index) => {
+      movie.comments = filmsComments[index];
+    });
+    cardsModel.setCards(UpdateType.INIT, movies);
+  })
+  .catch(() => {
+    movies.map((movie) => {
+      movie.comments = [];
+    });
+    cardsModel.setCards(UpdateType.INIT, movies);
+  });
+})
+.catch(() => {
+  cardsModel.setCards(UpdateType.INIT, []);
+});

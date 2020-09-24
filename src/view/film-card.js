@@ -2,7 +2,8 @@ import AbstractView from "./abstract.js";
 import {getShortDescription} from "../utils/film-card.js";
 
 const createFilmCardTemplate = (card) => {
-  const {name, image, rating, year, duration, genre, description, isInWatchlist, isWatched, isFavorite, comments} = card;
+  const {name, image, rating, releaseDate, duration, genre, description, isInWatchlist, isWatched, isFavorite, comments} = card;
+  const year = releaseDate.slice(-4);
   const genreFilm = genre[0];
   const commentsQuantity = comments.length;
   const watchlist = isInWatchlist ? `film-card__controls-item--active` : ``;

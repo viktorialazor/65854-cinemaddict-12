@@ -263,7 +263,8 @@ export default class FilmDetailsView extends SmartView {
     evt.preventDefault();
 
     this.updateData({
-      isWatchedOn: !this._data.isWatchedOn
+      isWatchedOn: !this._data.isWatchedOn,
+      watchingDate: this._data.isWatchedOn === false ? new Date() : null
     });
   }
 
@@ -283,7 +284,7 @@ export default class FilmDetailsView extends SmartView {
   }
 
   static parseCardToData(card) {
-    return Object.assign(
+    card = Object.assign(
         {},
         card,
         {
@@ -292,6 +293,8 @@ export default class FilmDetailsView extends SmartView {
           isWatchedOn: card.isWatched
         }
     );
+
+    return card;
   }
 
   static parseDataToCard(data) {
