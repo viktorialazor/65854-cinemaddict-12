@@ -1,7 +1,6 @@
 import {MINUTES_LENGTH, MINUTES_IN_HOUR} from "../const.js";
 import moment from "moment";
 import momentDurationFormat from "moment-duration-format";
-import {getRandomInteger} from "../utils/common.js";
 
 momentDurationFormat(moment);
 
@@ -135,14 +134,4 @@ export const getGenresList = (cards) => {
     genres: genresList,
     quantity: quantityList
   };
-};
-
-export const getFilmsList = (cards, type) => {
-  let watchedFilms = cards.slice();
-
-  if (type !== `all-time`) {
-    watchedFilms = cards.slice(0, getRandomInteger(1, cards.length));
-  }
-
-  return watchedFilms;
 };

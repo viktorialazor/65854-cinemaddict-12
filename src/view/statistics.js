@@ -1,8 +1,8 @@
+import {FilterStatisticType} from "../const.js";
+import {getFilmsDuration, getTopGenre, getGenresList} from "../utils/statistic.js";
 import SmartView from "./smart.js";
 import Chart from "chart.js";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import {FilterStatisticType} from "../const.js";
-import {getFilmsDuration, getTopGenre, getGenresList} from "../utils/statistic.js";
 
 const renderStatsChart = (statisticCtx, cards) => {
   const genresList = getGenresList(cards);

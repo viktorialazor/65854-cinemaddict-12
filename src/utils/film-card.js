@@ -1,12 +1,13 @@
-import {FILM_EXTRA_COUNT, COMMENT_AUTHORS, COMMENT_DATE, RELEASE_FILM_DATE, FILM_DURATION, MAX_SYMBOLS, USER_FAN_MIN, USER_FAN_MAX} from "../const.js";
-import {getRandomInteger} from "./common.js";
+import {FILM_EXTRA_COUNT, COMMENT_DATE, RELEASE_FILM_DATE, FILM_DURATION, MAX_SYMBOLS, USER_FAN_MIN, USER_FAN_MAX} from "../const.js";
 import moment from "moment";
 import momentDurationFormat from "moment-duration-format";
 
 momentDurationFormat(moment);
 
-export const humanizeDate = (dueDate) => {
-  return dueDate.toLocaleString(`en-US`, {year: `numeric`, month: `numeric`, day: `numeric`, hour: `numeric`, minute: `numeric`});
+export const getCommentDate = () => {
+  const currentDate = new Date();
+
+  return moment(currentDate).format(`YYYY/MM/DD hh:mm`);
 };
 
 export const formatCommentDate = (commentDate) => {
@@ -27,10 +28,6 @@ export const formatReleaseDate = (releaseDate) => {
 
 export const formatFilmDuration = (filmDuration) => {
   return moment.duration(filmDuration, `minutes`).format(FILM_DURATION);
-};
-
-export const isFilmInFilter = () => {
-  return Boolean(getRandomInteger(0, 1));
 };
 
 export const getTopCards = (filmsCards) => {
@@ -81,12 +78,6 @@ export const sortByRating = (cardA, cardB) => {
   }
 
   return cardB.rating - cardA.rating;
-};
-
-export const generateCommentAuthor = () => {
-  const randomIndex = getRandomInteger(0, COMMENT_AUTHORS.length - 1);
-
-  return COMMENT_AUTHORS[randomIndex];
 };
 
 export const getShortDescription = (description) => {

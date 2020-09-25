@@ -1,9 +1,9 @@
-import {UserAction, UpdateType, CommentAlt, CommentImgPath} from "../const.js";
-import {getDate} from "../utils/common.js";
-import SmartView from "./smart.js";
+import {UpdateType, CommentAlt, CommentImgPath} from "../const.js";
+import {getCommentDate} from "../utils/film-card.js";
 import {createFilmInfoTemplate} from "./film-details-info.js";
 import {createFilmControlsTemplate} from "./film-details-controls.js";
 import {createFilmCommentsTemplate} from "./film-details-comments.js";
+import SmartView from "./smart.js";
 
 const createFilmDetailsTemplate = (data) => {
   const infoTemplate = createFilmInfoTemplate(data);
@@ -205,7 +205,7 @@ export default class FilmDetailsView extends SmartView {
       if (this._newCommentText.value !== `` && this._emojiId !== ``) {
         const currentDate = new Date();
         const newComment = {
-          date: getDate(),
+          date: getCommentDate(),
           commentDate: new Date(currentDate),
           text: this._newCommentText.value,
           emoji: this._getEmojiImg(this._emojiId),
@@ -309,7 +309,7 @@ export default class FilmDetailsView extends SmartView {
   }
 
   _closeDetailsCard(newData) {
-    this._changeEditData(UserAction.UPDATE_CARD, UpdateType.COMMENT, FilmDetailsView.parseDataToCard(newData));
+    this._changeEditData(UpdateType.COMMENT, FilmDetailsView.parseDataToCard(newData));
     this.getElement().remove();
   }
 

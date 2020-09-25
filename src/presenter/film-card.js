@@ -1,7 +1,7 @@
-import {RenderPosition, UserAction, UpdateType} from "../const.js";
+import {RenderPosition, UpdateType} from "../const.js";
+import {render, replace, remove} from "../utils/render.js";
 import FilmCardView from "../view/film-card.js";
 import FilmDetailsView from "../view/film-details.js";
-import {render, replace, remove} from "../utils/render.js";
 
 const Mode = {
   DEFAULT: `DEFAULT`,
@@ -98,7 +98,6 @@ export default class Card {
 
   _handleFavoriteClick() {
     this._changeData(
-        UserAction.UPDATE_CARD,
         UpdateType.PATCH,
         Object.assign(
             {},
@@ -112,7 +111,6 @@ export default class Card {
 
   _handleWatchlistClick() {
     this._changeData(
-        UserAction.UPDATE_CARD,
         UpdateType.PATCH,
         Object.assign(
             {},
@@ -126,7 +124,6 @@ export default class Card {
 
   _handleWatchedClick() {
     this._changeData(
-        UserAction.UPDATE_CARD,
         UpdateType.PATCH,
         Object.assign(
             {},

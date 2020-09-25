@@ -1,7 +1,8 @@
-import {CARD_COUNT_PER_STEP, RenderPosition, SortType, UpdateType, UserAction, FilterStatisticType} from "../const.js";
+import {CARD_COUNT_PER_STEP, RenderPosition, SortType, UpdateType, FilterStatisticType} from "../const.js";
 import {getTopCards, getMostCommentedCards, sortByDate, sortByRating} from "../utils/film-card.js";
 import {render, remove} from "../utils/render.js";
 import {filter} from "../utils/filter.js";
+import {getWatchedFilms} from "../utils/statistic.js";
 import UserProfileView from "../view/user-profile.js";
 import FilmsQuantityView from "../view/films-quantity.js";
 import SortView from "../view/sort.js";
@@ -15,7 +16,6 @@ import NoFilmCardsView from "../view/no-film-card.js";
 import StatisticsView from "../view/statistics.js";
 import LoadingView from "../view/loading.js";
 import CardPresenter from "./film-card.js";
-import {getWatchedFilms} from "../utils/statistic.js";
 
 export default class FilmsBoardPresenter {
   constructor(filmsBoardContainer, cardsModel, filterModel, api) {
@@ -78,22 +78,12 @@ export default class FilmsBoardPresenter {
     return filtredCards;
   }
 
-  _handleViewAction(actionType, updateType, update) {
-    switch (actionType) {
-      case UserAction.UPDATE_CARD:
-        this._api.updateCard(update).then((response) => {
-          if (response) {
-            this._cardsModel.updateCard(updateType, update);
-          }
-        });
-        break;
-      case UserAction.ADD_CARD:
-        this._cardsModel.addCard(updateType, update);
-        break;
-      case UserAction.DELETE_CARD:
-        this._cardsModel.deleteCard(updateType, update);
-        break;
-    }
+  _handleViewAction(updateType, update) {
+    this._api.updateCard(update).then((response) => {
+      if (response) {
+        this._cardsModel.updateCard(updateType, update);
+      }
+    });
   }
 
   _handleModelEvent(updateType, data) {
