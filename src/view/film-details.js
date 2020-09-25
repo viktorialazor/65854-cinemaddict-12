@@ -1,6 +1,5 @@
 import {UserAction, UpdateType, CommentAlt, CommentImgPath} from "../const.js";
-import {generateId, getDate} from "../utils/common.js";
-import {generateCommentAuthor} from "../utils/film-card.js";
+import {getDate} from "../utils/common.js";
 import SmartView from "./smart.js";
 import {createFilmInfoTemplate} from "./film-details-info.js";
 import {createFilmControlsTemplate} from "./film-details-controls.js";
@@ -10,12 +9,12 @@ const createFilmDetailsTemplate = (data) => {
   const infoTemplate = createFilmInfoTemplate(data);
   const controlsTemplate = createFilmControlsTemplate(data);
   const commentsTemplate = createFilmCommentsTemplate(data);
-  const {comments} = data;
+  const {comments, isDisabled} = data;
   const commentsQuantity = comments.length;
 
   return (
     `<section class="film-details">
-      <form class="film-details__inner" action="" method="get">
+      <form class="film-details__inner" action="" method="get" ${isDisabled ? `disabled` : ``}>
         <div class="form-details__top-container">
           <div class="film-details__close">
             <button class="film-details__close-btn" type="button">close</button>
@@ -64,11 +63,13 @@ const createFilmDetailsTemplate = (data) => {
 };
 
 export default class FilmDetailsView extends SmartView {
-  constructor(card, changeEditData) {
+  constructor(card, changeEditData, api) {
     super();
     this._changeEditData = changeEditData;
     this._data = FilmDetailsView.parseCardToData(card);
     this._commentsList = ``;
+    this._emojiId = ``;
+    this._api = api;
 
     this._filmCommentsList = card.comments;
     this._closeClickHandler = this._closeClickHandler.bind(this);
@@ -133,9 +134,10 @@ export default class FilmDetailsView extends SmartView {
     }
 
     evt.preventDefault();
-    const comment = evt.target.closest(`.film-details__comment`);
-    comment.remove();
-    this._deleteComment(evt.target.dataset.commentId);
+    const button = evt.target;
+    button.disabled = true;
+    button.textContent = `Deleting...`;
+    this._deleteComment(evt.target.dataset.commentId, evt.target);
   }
 
   _getNewCommentText(evt) {
@@ -143,25 +145,28 @@ export default class FilmDetailsView extends SmartView {
     return text;
   }
 
-  _getEmojiId() {
-    const id = event.target.id;
-    return id;
+  _getEmojiId(evt) {
+    if (evt.target.tagName !== `INPUT`) {
+      return;
+    }
+
+    this._emojiId = evt.target.value;
   }
 
   _getEmojiImg(emoji) {
     let emojiImg = ``;
 
     switch (emoji) {
-      case `emoji-smile`:
+      case `smile`:
         emojiImg = CommentImgPath.SMILE;
         break;
-      case `emoji-sleeping`:
+      case `sleeping`:
         emojiImg = CommentImgPath.SLEEPING;
         break;
-      case `emoji-puke`:
+      case `puke`:
         emojiImg = CommentImgPath.PUKE;
         break;
-      case `emoji-angry`:
+      case `angry`:
         emojiImg = CommentImgPath.ANGRY;
         break;
     }
@@ -173,16 +178,16 @@ export default class FilmDetailsView extends SmartView {
     let emojiAlt = ``;
 
     switch (alt) {
-      case `emoji-smile`:
+      case `smile`:
         emojiAlt = CommentAlt.SMILE;
         break;
-      case `emoji-sleeping`:
+      case `sleeping`:
         emojiAlt = CommentAlt.SLEEPING;
         break;
-      case `emoji-puke`:
+      case `puke`:
         emojiAlt = CommentAlt.PUKE;
         break;
-      case `emoji-angry`:
+      case `angry`:
         emojiAlt = CommentAlt.ANGRY;
         break;
     }
@@ -195,15 +200,16 @@ export default class FilmDetailsView extends SmartView {
       evt.preventDefault();
 
       this._newCommentText = this.getElement().querySelector(`.film-details__comment-input`);
+      this._emojiComment = this.getElement().querySelector(`.film-details__emoji-list`);
 
-      if (this._newCommentText.value !== `` && this._getEmojiId()) {
+      if (this._newCommentText.value !== `` && this._emojiId !== ``) {
+        const currentDate = new Date();
         const newComment = {
-          id: generateId(),
-          author: generateCommentAuthor(),
           date: getDate(),
+          commentDate: new Date(currentDate),
           text: this._newCommentText.value,
-          emoji: this._getEmojiImg(this._getEmojiId()),
-          alt: this._getEmojiAlt(this._getEmojiId())
+          emoji: this._getEmojiImg(this._emojiId),
+          alt: this._getEmojiAlt(this._emojiId)
         };
 
         this._addComment(newComment);
@@ -217,29 +223,63 @@ export default class FilmDetailsView extends SmartView {
   }
 
   _addComment(update) {
-    this._filmCommentsList = [
-      update,
-      ...this._filmCommentsList
-    ];
-    this.updateData({
-      comments: this._filmCommentsList
+    const formElement = document.querySelector(`.film-details__new-comment`);
+    formElement.classList.add(`film-details__new-comment--disabled`);
+
+    if (formElement.classList.contains(`shake`)) {
+      formElement.classList.remove(`shake`);
+    }
+
+    const newData = FilmDetailsView.parseDataToCard(this._data);
+    this._api.addComment(newData, update)
+    .then((response) => {
+      if (response) {
+        const index = response.length - 1;
+        this._filmCommentsList = [
+          ...this._filmCommentsList,
+          response[index]
+        ];
+        this.updateData({
+          comments: this._filmCommentsList
+        });
+      }
+    })
+    .catch(() => {
+      formElement.classList.add(`shake`);
+      formElement.classList.remove(`film-details__new-comment--disabled`);
+      formElement
+        .querySelector(`.film-details__emoji-list`)
+        .addEventListener(`click`, this._getEmojiId);
     });
   }
 
-  _deleteComment(update) {
+  _deleteComment(update, button) {
     const index = this._filmCommentsList.findIndex((comments) => parseInt(comments.id, 10) === parseInt(update, 10));
+    const comment = button.closest(`.film-details__comment`);
 
     if (index === -1) {
       throw new Error(`Can't delete unexisting comments`);
     }
 
-    this._filmCommentsList = [
-      ...this._filmCommentsList.slice(0, index),
-      ...this._filmCommentsList.slice(index + 1)
-    ];
+    if (comment.classList.contains(`shake`)) {
+      comment.classList.remove(`shake`);
+    }
 
-    this.updateData({
-      comments: this._filmCommentsList
+    this._api.deleteComment(update)
+    .then(() => {
+      this._filmCommentsList = [
+        ...this._filmCommentsList.slice(0, index),
+        ...this._filmCommentsList.slice(index + 1)
+      ];
+
+      this.updateData({
+        comments: this._filmCommentsList
+      });
+    })
+    .catch(() => {
+      comment.classList.add(`shake`);
+      button.disabled = false;
+      button.textContent = `Delete`;
     });
   }
 
@@ -290,7 +330,9 @@ export default class FilmDetailsView extends SmartView {
         {
           isFavoriteOn: card.isFavorite,
           isInWatchlistOn: card.isInWatchlist,
-          isWatchedOn: card.isWatched
+          isWatchedOn: card.isWatched,
+          isDisabled: false,
+          isDeleting: false
         }
     );
 
@@ -311,6 +353,8 @@ export default class FilmDetailsView extends SmartView {
     delete data.isFavoriteOn;
     delete data.isInWatchlistOn;
     delete data.isWatchedOn;
+    delete data.isDisabled;
+    delete data.isDeleting;
 
     return data;
   }

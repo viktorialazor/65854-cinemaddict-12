@@ -235,7 +235,7 @@ export default class FilmsBoardPresenter {
   }
 
   _renderCard(position, card) {
-    const cardPresenter = new CardPresenter(this._filmsBoardContainer, this._handleViewAction, this._handleModeChange);
+    const cardPresenter = new CardPresenter(this._filmsBoardContainer, this._handleViewAction, this._handleModeChange, this._api);
     cardPresenter.init(position, card);
     if (!this._cardPresenter.hasOwnProperty([card.id])) {
       this._cardPresenter[card.id] = cardPresenter;
