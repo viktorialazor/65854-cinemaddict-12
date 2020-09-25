@@ -77,9 +77,11 @@ export default class Cards extends Observer {
   static adaptCardToServer(movie) {
     let commentsNew = [];
 
-    if (movie.comments[0].id) {
+    if (movie.comments[0].text) {
       movie.comments.forEach((comment) => {
-        commentsNew.push(comment.id);
+        if (comment.id) {
+          commentsNew.push(comment.id);
+        }
       });
     } else {
       commentsNew = movie.comments;
@@ -147,6 +149,8 @@ export default class Cards extends Observer {
           text: comment.comment,
           emoji: `./images/emoji/${comment.emotion}.png`,
           alt: comment.emotion,
+          isDisabled: false,
+          isDeleting: false
         }
     );
 
@@ -170,6 +174,8 @@ export default class Cards extends Observer {
     delete adaptedComment.commentDate;
     delete adaptedComment.text;
     delete adaptedComment.alt;
+    delete adaptedComment.isDisabled;
+    delete adaptedComment.isDeleting;
 
     return adaptedComment;
   }

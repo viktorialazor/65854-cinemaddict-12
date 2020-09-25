@@ -16,7 +16,7 @@ export const createFilmCommentsTemplate = (data) => {
           <p class="film-details__comment-info">
             <span class="film-details__comment-author">` + comment.author + `</span>
             <span class="film-details__comment-day">` + comment.date + `</span>
-            <button class="film-details__comment-delete" data-comment-id="${comment.id}">Delete</button>
+            <button class="film-details__comment-delete" data-comment-id="${comment.id}" ${comment.isDisabled === true ? `disabled` : ``}>${comment.isDeleting === true ? `Deleting...` : `Delete`}</button>
           </p>
         </div>
       </li>`;

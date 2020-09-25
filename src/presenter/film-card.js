@@ -9,7 +9,7 @@ const Mode = {
 };
 
 export default class Card {
-  constructor(filmsBoardContainer, changeData, changeMode) {
+  constructor(filmsBoardContainer, changeData, changeMode, api) {
     this._filmsBoardContainer = filmsBoardContainer;
     this._changeData = changeData;
     this._changeMode = changeMode;
@@ -19,6 +19,7 @@ export default class Card {
     this._cardDetailsComponent = null;
     this._commentsContainer = null;
     this._mode = Mode.DEFAULT;
+    this._api = api;
 
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
     this._handleDetailsClick = this._handleDetailsClick.bind(this);
@@ -36,7 +37,7 @@ export default class Card {
     const prevCardEditComponent = this._cardDetailsComponent;
 
     this._cardComponent = new FilmCardView(card);
-    this._cardDetailsComponent = new FilmDetailsView(card, this._changeData);
+    this._cardDetailsComponent = new FilmDetailsView(card, this._changeData, this._api);
 
     this._commentsContainer = this._cardDetailsComponent.getElement().querySelector(`.film-details__comments-list`);
     this._cardCommentComponent = null;

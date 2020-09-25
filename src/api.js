@@ -2,7 +2,9 @@ import CardsModel from "./model/cards.js";
 
 const Method = {
   GET: `GET`,
-  PUT: `PUT`
+  PUT: `PUT`,
+  POST: `POST`,
+  DELETE: `DELETE`
 };
 
 const SuccessHTTPStatusRange = {
@@ -37,6 +39,26 @@ export default class Api {
     return this._load({url: `comments/` + filmId})
       .then(Api.toJSON)
       .then((comments) => comments.map(CardsModel.adaptCommentToClient));
+  }
+
+  addComment(movie, comment) {
+    return this._load({
+      url: `comments/${movie.id}`,
+      method: Method.POST,
+      body: JSON.stringify(CardsModel.adaptCommentToServer(comment)),
+      headers: new Headers({"Content-Type": `application/json`})
+    })
+      .then(Api.toJSON)
+      .then((response) => {
+        return response.comments.map(CardsModel.adaptCommentToClient);
+      });
+  }
+
+  deleteComment(comment) {
+    return this._load({
+      url: `comments/${comment}`,
+      method: Method.DELETE
+    });
   }
 
   _load({
