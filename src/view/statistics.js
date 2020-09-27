@@ -1,5 +1,6 @@
 import {FilterStatisticType} from "../const.js";
 import {getFilmsDuration, getTopGenre, getGenresList} from "../utils/statistic.js";
+import {generateProfileRating} from "../utils/film-card.js";
 import SmartView from "./smart.js";
 import Chart from "chart.js";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
@@ -79,12 +80,13 @@ const createStatisticsTemplate = (cards, type) => {
   const hours = duration.hours;
   const minutes = duration.minutes;
   const topGanre = getTopGenre(cards);
+  const profileRating = generateProfileRating(cards);
 
   return `<section class="statistic">
     <p class="statistic__rank">
       Your rank
       <img class="statistic__img" src="images/bitmap@2x.png" alt="Avatar" width="35" height="35">
-      <span class="statistic__rank-label">Sci-Fighter</span>
+      <span class="statistic__rank-label">${profileRating}</span>
     </p>
 
     <form action="https://echo.htmlacademy.ru/" method="get" class="statistic__filters">

@@ -1,4 +1,4 @@
-import {UpdateType, CommentAlt, CommentImgPath} from "../const.js";
+import {UpdateType, CommentAlt, CommentImgPath, CommentButtonName} from "../const.js";
 import {getCommentDate} from "../utils/film-card.js";
 import {createFilmInfoTemplate} from "./film-details-info.js";
 import {createFilmControlsTemplate} from "./film-details-controls.js";
@@ -81,7 +81,7 @@ export default class FilmDetailsView extends SmartView {
     this._enterKeyDownHandler = this._enterKeyDownHandler.bind(this);
     this._getEmojiId = this._getEmojiId.bind(this);
 
-    this._newCommentForm = this.getElement().querySelector(`.film-details__new-comment`);
+    this._emojiLabelElement = this.getElement().querySelector(`.film-details__add-emoji-label`);
 
     this._setInnerHandlers();
     this._setCommentHandler();
@@ -136,7 +136,7 @@ export default class FilmDetailsView extends SmartView {
     evt.preventDefault();
     const button = evt.target;
     button.disabled = true;
-    button.textContent = `Deleting...`;
+    button.textContent = CommentButtonName.DELETING;
     this._deleteComment(evt.target.dataset.commentId, evt.target);
   }
 
@@ -150,7 +150,19 @@ export default class FilmDetailsView extends SmartView {
       return;
     }
 
+    if (this._emojiLabelElement.hasChildNodes()) {
+      this._emojiLabelElement.removeChild(this._emojiLabelElement.childNodes[0]);
+    }
+
     this._emojiId = evt.target.value;
+
+    const emojiLabel = document.createElement('img');
+    emojiLabel.width = `70`;
+    emojiLabel.height = `70`;
+    emojiLabel.alt = this._getEmojiAlt(this._emojiId);
+    emojiLabel.src = this._getEmojiImg(this._emojiId);
+
+    this._emojiLabelElement.append(emojiLabel);
   }
 
   _getEmojiImg(emoji) {
@@ -279,7 +291,7 @@ export default class FilmDetailsView extends SmartView {
     .catch(() => {
       comment.classList.add(`shake`);
       button.disabled = false;
-      button.textContent = `Delete`;
+      button.textContent = CommentButtonName.DELETE;
     });
   }
 

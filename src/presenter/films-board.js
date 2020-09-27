@@ -1,4 +1,4 @@
-import {CARD_COUNT_PER_STEP, RenderPosition, SortType, UpdateType, FilterStatisticType} from "../const.js";
+import {CARD_COUNT_PER_STEP, RenderPosition, SortType, UpdateType, FilterStatisticType, FilmListTitle} from "../const.js";
 import {getTopCards, getMostCommentedCards, sortByDate, sortByRating} from "../utils/film-card.js";
 import {render, remove} from "../utils/render.js";
 import {filter} from "../utils/filter.js";
@@ -268,7 +268,7 @@ export default class FilmsBoardPresenter {
       const filmsRatedTitleElement = this._filmsRatedList.getElement().querySelector(`.films-list__title`);
       const filmsRatedContainerElement = this._filmsRatedList.getElement().querySelector(`.films-list__container`);
 
-      filmsRatedTitleElement.textContent = `Top rated`;
+      filmsRatedTitleElement.textContent = FilmListTitle.RATED;
       this._renderTopRated(filmsRatedContainerElement);
     }
 
@@ -280,7 +280,7 @@ export default class FilmsBoardPresenter {
       const filmsCommentedTitleElement = this._filmsCommentedList.getElement().querySelector(`.films-list__title`);
       const filmsCommentedContainerElement = this._filmsCommentedList.getElement().querySelector(`.films-list__container`);
 
-      filmsCommentedTitleElement.textContent = `Most commented`;
+      filmsCommentedTitleElement.textContent = FilmListTitle.COMMENTED;
       this._renderMostCommented(filmsCommentedContainerElement);
     }
   }
