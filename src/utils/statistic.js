@@ -65,7 +65,7 @@ export const getFilmsDuration = (cards) => {
 };
 
 export const getGenresRate = (allGenres) => {
-  let resultReduce = allGenres.reduce((acc, cur) => {
+  const resultReduce = allGenres.reduce((acc, cur) => {
     if (!acc.hash[cur]) {
       acc.hash[cur] = {[cur]: 1};
       acc.map.set(acc.hash[cur], 1);
@@ -81,7 +81,7 @@ export const getGenresRate = (allGenres) => {
     result: []
   });
 
-  let genresRated = resultReduce.result.sort((elemA, elemB) => {
+  const genresRated = resultReduce.result.sort((elemA, elemB) => {
     return resultReduce.map.get(elemB) - resultReduce.map.get(elemA);
   });
 
@@ -117,8 +117,8 @@ export const getWatchedFilms = (cards) => {
 
 export const getGenresList = (cards) => {
   let genres = [];
-  let genresList = [];
-  let quantityList = [];
+  const genresList = [];
+  const quantityList = [];
 
   cards.forEach((card) => {
     genres = genres.concat(card.genre);

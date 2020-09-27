@@ -92,7 +92,7 @@ export default class FilmsBoardPresenter {
         this._cardPresenter[data.id].init(this._filmsListContainerComponent, data);
         this._cardRatedPresenter.forEach((cardRated) => {
           if (parseInt(Object.keys(cardRated), 10) === parseInt(data.id, 10)) {
-            let cardRatedNew = Object.values(cardRated);
+            const cardRatedNew = Object.values(cardRated);
             cardRatedNew[0].init(this._filmsListContainerComponent, data);
           }
         });
@@ -103,7 +103,7 @@ export default class FilmsBoardPresenter {
         this._cardPresenter[data.id].init(this._filmsListContainerComponent, data);
         this._cardRatedPresenter.forEach((cardRated) => {
           if (parseInt(Object.keys(cardRated), 10) === parseInt(data.id, 10)) {
-            let cardRatedNew = Object.values(cardRated);
+            const cardRatedNew = Object.values(cardRated);
             cardRatedNew[0].init(this._filmsListContainerComponent, data);
           }
         });
@@ -141,7 +141,7 @@ export default class FilmsBoardPresenter {
         presenter.resetView();
       });
     this._cardRatedPresenter.forEach((presenter) => {
-      let ratedPresenter = Object.values(presenter);
+      const ratedPresenter = Object.values(presenter);
       ratedPresenter[0].resetView();
     });
   }
@@ -170,28 +170,28 @@ export default class FilmsBoardPresenter {
         this._cardsWatched = filmsWatched.slice();
         break;
       case FilterStatisticType.TODAY:
-        let nowDateStart = new Date();
-        let nowDateEnd = new Date();
+        const nowDateStart = new Date();
+        const nowDateEnd = new Date();
         this._cardsWatched = filmsWatched.slice().filter((card) => {
           return card.watchingDate > nowDateStart.setHours(0, 0, 0, 0) && card.watchingDate < nowDateEnd.setHours(23, 59, 59, 999);
         });
         break;
       case FilterStatisticType.WEEK:
-        let nowDateWeek = new Date();
+        const nowDateWeek = new Date();
         const weekAgo = new Date(nowDateWeek.setDate(nowDateWeek.getDate() - 7));
         this._cardsWatched = filmsWatched.slice().filter((card) => {
           return card.watchingDate > weekAgo && card.watchingDate < new Date();
         });
         break;
       case FilterStatisticType.MONTH:
-        let nowDateMonth = new Date();
+        const nowDateMonth = new Date();
         const monthAgo = new Date(nowDateMonth.setMonth(nowDateMonth.getMonth() - 1));
         this._cardsWatched = filmsWatched.slice().filter((card) => {
           return card.watchingDate > monthAgo && card.watchingDate < new Date();
         });
         break;
       case FilterStatisticType.YEAR:
-        let nowDateYear = new Date();
+        const nowDateYear = new Date();
         const yearAgo = new Date(nowDateYear.setFullYear(nowDateYear.getFullYear() - 1));
         this._cardsWatched = filmsWatched.slice().filter((card) => {
           return card.watchingDate > yearAgo && card.watchingDate < new Date();
@@ -230,7 +230,7 @@ export default class FilmsBoardPresenter {
     if (!this._cardPresenter.hasOwnProperty([card.id])) {
       this._cardPresenter[card.id] = cardPresenter;
     } else {
-      let cardRated = {[card.id]: cardPresenter};
+      const cardRated = {[card.id]: cardPresenter};
       this._cardRatedPresenter.push(cardRated);
     }
   }

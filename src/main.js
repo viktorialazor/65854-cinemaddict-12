@@ -20,7 +20,7 @@ filmsBoardPresenter.init();
 
 api.getCards()
 .then((movies) => {
-  let getCommentsRequests = [];
+  const getCommentsRequests = [];
 
   movies.map((movie) => {
     getCommentsRequests.push(api.getComments(movie.id));
