@@ -28,7 +28,7 @@ const createFilterItemTemplate = (filter, currentFilterType, stats) => {
   const filterName = getFilterName(name);
 
   const getFilterCount = (nameFilter, countFilter) => {
-    return nameFilter === `All` ? `` : `<span class="main-navigation__item-count">${count}</span>`;
+    return nameFilter === `All` ? `` : `<span class="main-navigation__item-count">${countFilter}</span>`;
   };
 
   const filterCount = getFilterCount(name, count);

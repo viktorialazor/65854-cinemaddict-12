@@ -156,7 +156,7 @@ export default class FilmDetailsView extends SmartView {
 
     this._emojiId = evt.target.value;
 
-    const emojiLabel = document.createElement('img');
+    const emojiLabel = document.createElement(`img`);
     emojiLabel.width = `70`;
     emojiLabel.height = `70`;
     emojiLabel.alt = this._getEmojiAlt(this._emojiId);
